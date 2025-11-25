@@ -2372,6 +2372,29 @@ div.hero-kfz-badge > i,
     transition: color 0.3s ease;
 }
 
+/* Hero Subtitle für Stadt-Seiten */
+.hero-kfz-subtitle {
+    display: block;
+    font-size: clamp(var(--font-size-base), 1.5vw, var(--font-size-xl));
+    font-weight: 500;
+    color: color-mix(in srgb, var(--hero-light) 90%, transparent);
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+    margin-top: var(--spacing-md);
+    margin-bottom: 0;
+    text-align: center;
+    animation: fadeInUp 0.8s ease-out 0.5s both;
+    transition: color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .hero-kfz-subtitle {
+        font-size: clamp(1rem, 3vw, 1.25rem) !important;
+        font-weight: 600 !important;
+        margin-top: var(--spacing-sm);
+    }
+}
+
 /* Trust-Bereich mit Bewertungen */
 .hero-kfz-trust {
     display: flex;
