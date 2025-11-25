@@ -19,7 +19,16 @@ const adminRoutes = require('./api/routes/admin');
 // WhatsApp-Service (optional - nur wenn konfiguriert)
 let whatsappService = null;
 try {
-    whatsappService = require('../whatsapp-service');
+    // Versuche zuerst im Hauptverzeichnis, dann im aktuellen Verzeichnis
+    try {
+        whatsappService = require('../whatsapp-service');
+    } catch (e) {
+        try {
+            whatsappService = require('./whatsapp-service');
+        } catch (e2) {
+            throw e;
+        }
+    }
     // Initialisiere WhatsApp-Service beim Server-Start
     if (whatsappService && process.env.ADMIN_PHONE_NUMBER) {
         whatsappService.initialize().catch(error => {
