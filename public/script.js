@@ -1609,17 +1609,8 @@ if (appointmentForm) {
         }
         
         try {
-            // Erkenne ob lokal (Express) oder auf Server (PHP)
-            const isLocal = window.location.hostname === 'localhost' || 
-                           window.location.hostname === '127.0.0.1' || 
-                           window.location.port === '3000' ||
-                           window.location.hostname.includes('localhost');
-            
-            // Auf Strato: Verwende relativen Pfad (funktioniert besser)
-            // Lokal: Verwende absoluten Pfad mit Port
-            const apiUrl = isLocal 
-                ? `http://${window.location.hostname}:${window.location.port || 3000}/api/appointment`
-                : 'api/appointment.php';
+            // Verwende immer Node.js API-Endpoint (Server läuft mit Node.js/Express)
+            const apiUrl = '/api/appointment';
             
             console.log('Sende Anfrage an:', apiUrl, '(Lokal:', isLocal, ', Hostname:', window.location.hostname, ', Port:', window.location.port, ')');
             
@@ -1827,10 +1818,8 @@ if (contactForm) {
         }
         
         try {
-            // Erkenne ob lokal (Express) oder auf Server (PHP)
-            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port === '3000';
-            // Auf Strato: Verwende relativen Pfad (funktioniert besser)
-            const apiUrl = isLocal ? '/api/contact' : 'api/contact.php';
+            // Verwende immer Node.js API-Endpoint (Server läuft mit Node.js/Express)
+            const apiUrl = '/api/contact';
             console.log('Sende Anfrage an:', apiUrl, '(Lokal:', isLocal, ', Hostname:', window.location.hostname, ')');
             
             const response = await fetch(apiUrl, {
