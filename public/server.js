@@ -313,22 +313,16 @@ function generateStadtteileSection(cityData, cityName) {
   }
   
   const stadtteileList = stadtteile.map(stadtteil => 
-    `<li style="display: inline-block; margin: 0.5rem 1rem; padding: 0.5rem 1rem; background: rgba(10, 38, 71, 0.05); border-radius: 8px; font-size: 0.95rem;">
-      <i class="fa-solid fa-location-dot" style="color: var(--accent); margin-right: 0.5rem;"></i>
+    `<li style="display: inline-block; margin: 0.3rem 0.5rem; padding: 0.4rem 0.8rem; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 20px; font-size: 0.85rem; color: white; border: 1px solid rgba(255, 255, 255, 0.3);">
+      <i class="fa-solid fa-location-dot" style="color: var(--accent); margin-right: 0.3rem;"></i>
       ${stadtteil}
     </li>`
   ).join('');
   
   return `
-    <div style="margin-top: var(--spacing-2xl); padding-top: var(--spacing-xl); border-top: 2px solid rgba(10, 38, 71, 0.1);">
-      <h4 style="font-size: 1.3rem; font-weight: 700; color: var(--primary-dark); margin-bottom: var(--spacing-lg); text-align: center;">
-        <i class="fa-solid fa-map-location-dot" style="color: var(--accent); margin-right: 0.5rem;"></i>
-        Wir sind in allen Stadtteilen von ${cityName} für Sie da:
-      </h4>
-      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px; margin: 0 auto;">
-        ${stadtteileList}
-      </ul>
-    </div>
+    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px; margin: 0 auto;">
+      ${stadtteileList}
+    </ul>
   `;
 }
 
