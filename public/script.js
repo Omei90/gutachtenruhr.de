@@ -3648,60 +3648,9 @@ new MutationObserver(() => {
     const url = location.href;
     if (url !== lastUrl) {
         lastUrl = url;
-        trackVisitor();
+        setTimeout(trackVisitor, 100); // Kurze Verzögerung für SPA
     }
 }).observe(document, { subtree: true, childList: true });
-
-// Session-ID generieren und speichern
-function getSessionId() {
-    let sessionId = sessionStorage.getItem('analytics_session_id');
-    if (!sessionId) {
-        sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        sessionStorage.setItem('analytics_session_id', sessionId);
-    }
-    return sessionId;
-}
-
-// Verbesserte trackVisitor Funktion
-async function trackVisitor() {
-    try {
-        const sessionId = getSessionId();
-        const pageUrl = window.location.href;
-        const pageTitle = document.title;
-        const pagePath = window.location.pathname + window.location.search;
-        
-        const response = await fetch('/api/track-visitor', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                sessionId: sessionId,
-                pageUrl: pageUrl,
-                pageTitle: pageTitle,
-                pagePath: pagePath
-            })
-        });
-        
-        const data = await response.json();
-        if (data.success) {
-            console.log('✅ Besucher getrackt:', data.isReturning ? 'Wiederkehrender Besucher' : 'Neuer Besucher');
-        }
-    } catch (error) {
-        console.error('Fehler beim Tracking:', error);
-    }
-}
-
-// Track bei Seitenwechsel (für SPA)
-let lastUrl = location.href;
-new MutationObserver(() => {
-    const url = location.href;
-    if (url !== lastUrl) {
-        lastUrl = url;
-        trackVisitor();
-    }
-}).observe(document, { subtree: true, childList: true });
-*/
 
 // ============================================
 // Meisterbrief Lightbox
