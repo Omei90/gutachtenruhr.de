@@ -335,6 +335,107 @@ app.post('/api/appointment', async (req, res) => {
     });
 });
 
+// API: Besucher-Tracking
+app.post('/api/track-visitor', async (req, res) => {
+    try {
+        const db = require('./api/db');
+        const useragent = require('useragent');
+        const geoip = require('geoip-lite');
+        
+        const ip = req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for']?.split(',')[0] || 'unknown';
+        const userAgent = req.headers['user-agent'] || '';
+        const referrer = req.headers['referer'] || req.headers['referrer'] || '';
+        const sessionId = req.body.sessionId || req.headers['x-session-id'] || `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        
+        // Browser-Info parsen
+        const agent = useragent.parse(userAgent);
+        const deviceType = /mobile|android|iphone|ipad/i.test(userAgent) ? 'mobile' : 
+                          /tablet|ipad/i.test(userAgent) ? 'tablet' : 'desktop';
+        
+        // GeoIP
+        const geo = geoip.lookup(ip);
+        
+        // Referrer-Typ bestimmen
+        let referrerType = 'direct';
+        if (referrer) {
+            if (/google|bing|yahoo|duckduckgo/i.test(referrer)) referrerType = 'search';
+            else if (/facebook|twitter|instagram|linkedin/i.test(referrer)) referrerType = 'social';
+            else if (/utm_source|utm_medium|utm_campaign/.test(referrer)) referrerType = 'ad';
+            else referrerType = 'referral';
+        }
+        
+        // Prüfe ob Session bereits existiert
+        db.get('SELECT id, session_id FROM visits WHERE session_id = ? ORDER BY first_visit_at DESC LIMIT 1', 
+            [sessionId], async (err, existingVisit) => {
+                if (err) {
+                    console.error('Error checking existing visit:', err);
+                    return res.json({ success: false, error: 'Database error' });
+                }
+                
+                if (existingVisit) {
+                    // Update last activity
+                    db.run('UPDATE visits SET last_activity_at = datetime("now") WHERE id = ?', [existingVisit.id]);
+                    
+                    // Page View hinzufügen
+                    db.run(`INSERT INTO page_views (visit_id, session_id, page_url, page_title, page_path, viewed_at) 
+                            VALUES (?, ?, ?, ?, ?, datetime("now"))`, 
+                        [existingVisit.id, sessionId, req.body.pageUrl || '/', req.body.pageTitle || '', req.body.pagePath || '/']);
+                    
+                    return res.json({ 
+                        success: true, 
+                        isReturning: true,
+                        visitCount: 1,
+                        sessionId: sessionId
+                    });
+                } else {
+                    // Neue Session erstellen
+                    db.run(`INSERT INTO visits 
+                            (session_id, ip_address, user_agent, referrer, referrer_type, device_type, browser, browser_version, os, os_version, country, region, city, first_visit_at, last_activity_at)
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime("now"), datetime("now"))`,
+                        [sessionId, ip, userAgent, referrer, referrerType, deviceType, agent.family, agent.toVersion(), agent.os.family, agent.os.toVersion(), 
+                         geo?.country || null, geo?.region || null, geo?.city || null],
+                        function(err) {
+                            if (err) {
+                                console.error('Error creating visit:', err);
+                                return res.json({ success: false, error: 'Database error' });
+                            }
+                            
+                            const visitId = this.lastID;
+                            
+                            // Page View hinzufügen
+                            db.run(`INSERT INTO page_views (visit_id, session_id, page_url, page_title, page_path, viewed_at) 
+                                    VALUES (?, ?, ?, ?, ?, datetime("now"))`, 
+                                [visitId, sessionId, req.body.pageUrl || '/', req.body.pageTitle || '', req.body.pagePath || '/']);
+                            
+                            // Demografie-Daten speichern
+                            db.run(`INSERT INTO user_demographics 
+                                    (visit_id, session_id, country, region, city, device_type, browser, browser_version, os, os_version, recorded_at)
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime("now"))`,
+                                [visitId, sessionId, geo?.country || null, geo?.region || null, geo?.city || null, 
+                                 deviceType, agent.family, agent.toVersion(), agent.os.family, agent.os.toVersion()]);
+                            
+                            res.json({ 
+                                success: true, 
+                                isReturning: false,
+                                visitCount: 1,
+                                sessionId: sessionId
+                            });
+                        });
+                }
+            });
+    } catch (error) {
+        console.error('Error tracking visitor:', error);
+        res.json({ success: false, error: error.message });
+    }
+});
+
+// API: Notify Visitor (für WhatsApp-Benachrichtigungen)
+app.post('/api/notify-visitor', async (req, res) => {
+    // Dieser Endpoint wird für WhatsApp-Benachrichtigungen verwendet
+    // Tracking erfolgt über /api/track-visitor
+    res.json({ success: true, message: 'Notification received' });
+});
+
 // API: Kontaktformular
 app.post('/api/contact', async (req, res) => {
     console.log('📧 POST /api/contact empfangen');
