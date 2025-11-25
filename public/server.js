@@ -438,11 +438,13 @@ app.use((req, res, next) => {
 });
 
 // Rate Limiting für Admin-API
-// trustProxy wird nicht benötigt, da app.set('trust proxy', true) bereits global gesetzt ist
+// trustProxy: false setzen, um Warnung zu vermeiden (express-rate-limit v7.x)
+// Die IP wird trotzdem korrekt erkannt durch app.set('trust proxy', true)
 const adminLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 Minute
   max: 100, // 100 Requests pro Minute für Admin
-  message: 'Zu viele Anfragen von dieser IP, bitte versuchen Sie es später erneut.'
+  message: 'Zu viele Anfragen von dieser IP, bitte versuchen Sie es später erneut.',
+  trustProxy: false // Explizit false, um Warnung zu vermeiden
 });
 
 app.use('/api/admin', adminLimiter);
