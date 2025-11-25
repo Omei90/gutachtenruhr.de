@@ -438,11 +438,11 @@ app.use((req, res, next) => {
 });
 
 // Rate Limiting für Admin-API
+// trustProxy wird nicht benötigt, da app.set('trust proxy', true) bereits global gesetzt ist
 const adminLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 Minute
   max: 100, // 100 Requests pro Minute für Admin
-  message: 'Zu viele Anfragen von dieser IP, bitte versuchen Sie es später erneut.',
-  trustProxy: true // WICHTIG: Aktiviert für Nginx Proxy
+  message: 'Zu viele Anfragen von dieser IP, bitte versuchen Sie es später erneut.'
 });
 
 app.use('/api/admin', adminLimiter);
