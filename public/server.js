@@ -351,6 +351,56 @@ app.post('/api/appointment', async (req, res) => {
     });
 });
 
+// API: Kontaktformular
+app.post('/api/contact', async (req, res) => {
+    console.log('📧 POST /api/contact empfangen');
+    console.log('Request Body:', JSON.stringify(req.body, null, 2));
+    
+    const { name, email, phone, message } = req.body;
+    
+    // Validierung
+    if (!name || !email || !phone) {
+        return res.status(400).json({ 
+            success: false, 
+            error: 'Pflichtfelder fehlen (Name, E-Mail, Telefon)' 
+        });
+    }
+    
+    // WhatsApp-Benachrichtigung an dich senden
+    if (whatsappService && process.env.ADMIN_PHONE_NUMBER) {
+        const whatsappMessage = `📧 *Neue Kontaktanfrage!*\n\n` +
+            `*Name:* ${name}\n` +
+            `*E-Mail:* ${email}\n` +
+            `*Telefon:* ${phone}\n` +
+            `${message ? `*Nachricht:* ${message}\n` : ''}` +
+            `\n*Zeitpunkt:* ${new Date().toLocaleString('de-DE')}`;
+
+        try {
+            const whatsappResult = await whatsappService.sendMessage(
+                process.env.ADMIN_PHONE_NUMBER,
+                whatsappMessage
+            );
+            
+            if (whatsappResult.success) {
+                console.log('✅ WhatsApp-Benachrichtigung gesendet (Kontaktformular)');
+            } else {
+                console.error('⚠️ WhatsApp-Versand fehlgeschlagen (Kontaktformular):', whatsappResult.error);
+            }
+        } catch (error) {
+            console.error('⚠️ WhatsApp-Versand fehlgeschlagen (Kontaktformular):', error);
+            // Kontaktanfrage wurde trotzdem empfangen, auch wenn WhatsApp fehlschlägt
+        }
+    } else {
+        console.log('⚠️ WhatsApp-Service nicht verfügbar für Kontaktformular');
+    }
+    
+    console.log('✅ Kontaktanfrage empfangen:', name);
+    res.json({ 
+        success: true, 
+        message: 'Deine Nachricht wurde erfolgreich gesendet. Wir melden uns schnellstmöglich bei dir.'
+    });
+});
+
 // Root Route - serviere index.html oder stadt-spezifische Version
 app.get('/', (req, res) => {
   const citySlug = req.query.stadt;
