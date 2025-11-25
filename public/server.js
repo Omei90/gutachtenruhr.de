@@ -758,7 +758,7 @@ app.get('/', (req, res) => {
 
 // Static Files (für Dashboard und Website) - NACH API-Routen
 // WICHTIG: express.static() kommt NACH den API-Routen
-// Aber nur für nicht-API-Routen
+// Aber nur für nicht-API-Routen und nicht für Stadt-spezifische Routen
 const staticMiddleware = express.static(__dirname, {
   index: false,
   dotfiles: 'ignore'
@@ -769,6 +769,17 @@ app.use((req, res, next) => {
   if (req.path.startsWith('/api/')) {
     return next();
   }
+  
+  // Wenn es eine Stadt-spezifische Route ist (z.B. /kfz-gutachter-essen), überspringe express.static()
+  if (req.path.startsWith('/kfz-gutachter-')) {
+    return next();
+  }
+  
+  // Wenn es eine Sitemap oder robots.txt ist, überspringe express.static()
+  if (req.path === '/sitemap.xml' || req.path === '/robots.txt') {
+    return next();
+  }
+  
   staticMiddleware(req, res, next);
 });
 
