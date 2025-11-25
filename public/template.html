@@ -56,74 +56,14 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
     
-    <!-- Schema.org Structured Data -->
+    <!-- Schema.org Structured Data - LocalBusiness/Service -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ProfessionalService",
-      "name": "GutachtenRuhr.de",
-      "alternateName": "Kfz Gutachter Ruhrgebiet",
-      "description": "Anerkanntes Kfz Sachverständigenbüro für Kfz-Schadengutachten im gesamten Ruhrgebiet und ganz NRW",
-      "url": "https://procheck-gutachten.de/",
-      "logo": "https://gutachtenruhr.de/images/logo.png",
-      "image": "https://gutachtenruhr.de/images/hero-image.jpg",
-      "telephone": "+4916097089709",
-      "email": "info@gutachtenruhr.de",
-      "serviceType": "Kfz-Schadengutachten im Außendienst",
-      "areaServed": {{AREA_SERVED_JSON}},
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Kfz Gutachten Dienstleistungen",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Kfz Schadengutachten",
-              "description": "Detaillierte Schadensbegutachtung nach Verkehrsunfällen"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Kostenvoranschlag",
-              "description": "Detaillierte Kostenschätzung für Fahrzeugreparaturen"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Wertermittlung / Bewertung",
-              "description": "Detaillierte Fahrzeugbewertung und Wertermittlung"
-            }
-          }
-        ]
-      },
-      "founder": {
-        "@type": "Person",
-        "name": "Carsten Heiken",
-        "jobTitle": "Geschäftsführer",
-        "hasCredential": [
-          {
-            "@type": "EducationalOccupationalCredential",
-            "credentialCategory": "Kfz Techniker Meister"
-          },
-          {
-            "@type": "EducationalOccupationalCredential",
-            "credentialCategory": "Anerkannter Kfz Sachverständiger"
-          }
-        ]
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "reviewCount": "100+"
-      },
-      "priceRange": "Kostenlos bei unverschuldetem Unfall",
-      "openingHours": "Mo-Fr 08:00-20:00"
-    }
+    {{SCHEMA_JSON}}
+    </script>
+    
+    <!-- Breadcrumbs Schema -->
+    <script type="application/ld+json">
+    {{BREADCRUMBS_JSON}}
     </script>
     
     <!-- FAQ Schema.org Structured Data -->
@@ -475,6 +415,17 @@
                     </div>
                 </div>
 
+            </div>
+        </section>
+
+        <!-- Stadt-spezifischer Content Section -->
+        <section class="city-content-section" id="stadt-content" style="padding: var(--spacing-xl) 0; background: var(--bg-primary);">
+            <div class="container">
+                <h2>{{CITY_H2}}</h2>
+                <h3>{{CITY_H3}}</h3>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-secondary); max-width: 800px; margin: var(--spacing-lg) auto;">
+                    {{CITY_CONTENT}}
+                </p>
             </div>
         </section>
 

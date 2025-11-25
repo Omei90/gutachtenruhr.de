@@ -149,6 +149,155 @@ function generateKeywords(cityName, citySlug) {
   return baseKeywords.join(', ');
 }
 
+// Schema.org JSON generieren (LocalBusiness für Oberhausen, Service für andere)
+function generateSchemaJson(cityData, cityName, citySlug, baseUrl) {
+  const isOberhausen = citySlug === 'oberhausen';
+  
+  if (isOberhausen) {
+    // LocalBusiness Schema für Oberhausen (Hauptstandort)
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": `${baseUrl}/kfz-gutachter-oberhausen`,
+      "name": "GutachtenRuhr.de - Kfz Gutachter Oberhausen",
+      "alternateName": "Kfz Gutachter Ruhrgebiet",
+      "description": `Anerkanntes Kfz Sachverständigenbüro für Kfz-Schadengutachten in Oberhausen und ganz NRW. Vor-Ort-Service im Außendienst.`,
+      "url": `${baseUrl}/kfz-gutachter-oberhausen`,
+      "logo": "https://gutachtenruhr.de/images/logo.png",
+      "image": "https://gutachtenruhr.de/images/hero-image.jpg",
+      "telephone": "+4916097089709",
+      "email": "info@gutachtenruhr.de",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Preußenstraße 32",
+        "addressLocality": "Oberhausen",
+        "postalCode": "46149",
+        "addressRegion": "Nordrhein-Westfalen",
+        "addressCountry": "DE"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 51.4967,
+        "longitude": 6.8633
+      },
+      "areaServed": JSON.parse(generateAreaServed(cityName)),
+      "priceRange": "Kostenlos bei unverschuldetem Unfall",
+      "openingHours": "Mo-Fr 08:00-20:00",
+      "founder": {
+        "@type": "Person",
+        "name": "Carsten Heiken",
+        "jobTitle": "Geschäftsführer",
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "Kfz Techniker Meister"
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "Anerkannter Kfz Sachverständiger"
+          }
+        ]
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "100+"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Kfz Gutachten Dienstleistungen",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Kfz Schadengutachten",
+              "description": "Detaillierte Schadensbegutachtung nach Verkehrsunfällen"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Kostenvoranschlag",
+              "description": "Detaillierte Kostenschätzung für Fahrzeugreparaturen"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Wertermittlung / Bewertung",
+              "description": "Detaillierte Fahrzeugbewertung und Wertermittlung"
+            }
+          }
+        ]
+      }
+    });
+  } else {
+    // Service Schema für andere Städte (Außendienst)
+    return JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": `Kfz Gutachter ${cityName}`,
+      "description": `Kfz-Schadengutachten Service in ${cityName}. Vor-Ort-Service im Außendienst von Oberhausen aus.`,
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "GutachtenRuhr.de",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Preußenstraße 32",
+          "addressLocality": "Oberhausen",
+          "postalCode": "46149",
+          "addressRegion": "Nordrhein-Westfalen",
+          "addressCountry": "DE"
+        },
+        "telephone": "+4916097089709",
+        "email": "info@gutachtenruhr.de"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": cityName
+        },
+        {
+          "@type": "State",
+          "name": "Nordrhein-Westfalen"
+        }
+      ],
+      "serviceType": "Kfz-Schadengutachten im Außendienst",
+      "url": `${baseUrl}/kfz-gutachter-${citySlug}`,
+      "availableChannel": {
+        "@type": "ServiceChannel",
+        "serviceType": "Außendienst",
+        "availableLanguage": "de"
+      }
+    });
+  }
+}
+
+// Breadcrumbs Schema generieren
+function generateBreadcrumbs(cityName, citySlug, baseUrl) {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Startseite",
+        "item": baseUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": `Kfz Gutachter ${cityName}`,
+        "item": `${baseUrl}/kfz-gutachter-${citySlug}`
+      }
+    ]
+  });
+}
+
 // Template rendern (mit Caching)
 function renderTemplate(cityData, baseUrl) {
   // Cache-Key erstellen (basierend auf Stadt-Slug)
@@ -171,6 +320,15 @@ function renderTemplate(cityData, baseUrl) {
   const twitterTitle = ogTitle;
   const twitterDescription = ogDescription;
   
+  // Stadt-spezifischer Content
+  const cityContent = cityData.content || `Als zertifizierter Kfz Gutachter in ${cityName} bieten wir Ihnen professionelle Schadensbegutachtung direkt vor Ort. Unser erfahrenes Team kommt zu Ihnen nach ${cityName} und erstellt ein gerichtsfestes Gutachten innerhalb von 24 Stunden. Kostenlos für Sie als Geschädigten bei unverschuldetem Unfall.`;
+  
+  const cityH2 = cityData.h2 || `Kfz Gutachter ${cityName} – Ihr Experte vor Ort`;
+  const cityH3 = cityData.h3 || `Service in ${cityName} und Umgebung`;
+  
+  // Schema.org JSON generieren
+  const schemaJson = generateSchemaJson(cityData, cityName, citySlug, baseUrl);
+  
   // Ersetzungen
   const replacements = {
     '{{META_TITLE}}': cityData.metaTitle || `Kfz Gutachter ${cityName} | Kostenlos 24h | GutachtenRuhr`,
@@ -184,7 +342,12 @@ function renderTemplate(cityData, baseUrl) {
     '{{CANONICAL_URL}}': canonicalUrl,
     '{{H1_TITLE}}': cityData.h1 || `Kfz Gutachter ${cityName}`,
     '{{HERO_TEXT}}': cityData.heroText || `Vor Ort Service in ${cityName} und ganz NRW`,
-    '{{AREA_SERVED_JSON}}': generateAreaServed(cityName)
+    '{{AREA_SERVED_JSON}}': generateAreaServed(cityName),
+    '{{CITY_CONTENT}}': cityContent,
+    '{{CITY_H2}}': cityH2,
+    '{{CITY_H3}}': cityH3,
+    '{{SCHEMA_JSON}}': schemaJson,
+    '{{BREADCRUMBS_JSON}}': generateBreadcrumbs(cityName, citySlug, baseUrl)
   };
   
   let rendered = template;
