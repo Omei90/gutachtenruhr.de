@@ -238,21 +238,15 @@ app.get('/api/available-slots', (req, res) => {
         return res.status(400).json({ error: 'Datum fehlt' });
     }
     
-    const appointments = loadAppointments();
-    const bookedSlots = appointments
-        .filter(apt => apt.date === date && apt.status !== 'cancelled')
-        .map(apt => apt.time);
-    
-    // Verfügbare Zeitslots (Mo-Fr 8-20 Uhr)
+    // Alle Zeitslots sind immer verfügbar (keine Prüfung auf Belegung)
     const allSlots = [
         '08:00', '09:00', '10:00', '11:00', '12:00',
         '13:00', '14:00', '15:00', '16:00', '17:00',
         '18:00', '19:00', '20:00'
     ];
     
-    const availableSlots = allSlots.filter(slot => !bookedSlots.includes(slot));
-    
-    res.json({ available: availableSlots, booked: bookedSlots });
+    // Alle Slots sind verfügbar
+    res.json({ available: allSlots, booked: [] });
 });
 
 // API: Terminbuchung
@@ -270,20 +264,10 @@ app.post('/api/appointment', async (req, res) => {
         });
     }
     
-    // Prüfe ob Termin bereits gebucht ist
+    // Lade Termine (für Speicherung, aber keine Prüfung auf Belegung)
     const appointments = loadAppointments();
-    const existingAppointment = appointments.find(
-        apt => apt.date === date && apt.time === time && apt.status !== 'cancelled'
-    );
     
-    if (existingAppointment) {
-        return res.status(409).json({ 
-            success: false, 
-            error: 'Dieser Termin ist bereits vergeben' 
-        });
-    }
-    
-    // Erstelle neuen Termin
+    // Erstelle neuen Termin (Termine sind immer verfügbar)
     const newAppointment = {
         id: Date.now().toString(),
         name,
