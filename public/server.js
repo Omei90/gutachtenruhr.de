@@ -331,10 +331,13 @@ function renderTemplate(cityData, baseUrl) {
   // Cache-Key erstellen (basierend auf Stadt-Slug)
   const cacheKey = cityData.slug;
   
-  // Prüfe ob bereits gecacht
-  if (renderedCache[cacheKey]) {
-    return renderedCache[cacheKey];
-  }
+  // Prüfe ob bereits gecacht - CACHE TEMPORÄR DEAKTIVIERT FÜR DEBUG
+  // if (renderedCache[cacheKey]) {
+  //   console.log(`📦 Cache verwendet für ${cityData.name}`);
+  //   return renderedCache[cacheKey];
+  // }
+  
+  console.log(`🔄 Rendere Template neu für ${cityData.name}`);
   
   const template = loadTemplate();
   const cityName = cityData.name;
@@ -355,12 +358,14 @@ function renderTemplate(cityData, baseUrl) {
   const cityH3 = cityData.h3 || `Service in ${cityName} und Umgebung`;
   
   // Stadtteile generieren
+  console.log(`📋 Prüfe Stadtteile für ${cityName}...`);
+  console.log(`   cityData.stadtteile:`, cityData.stadtteile ? `Array mit ${cityData.stadtteile.length} Einträgen` : 'UNDEFINED');
   const stadtteileSection = generateStadtteileSection(cityData, cityName);
-  console.log(`📋 Stadtteile für ${cityName}:`, cityData.stadtteile ? cityData.stadtteile.length : 0, 'Stadtteile gefunden');
-  if (cityData.stadtteile && cityData.stadtteile.length > 0) {
-    console.log(`✅ Stadtteile-Section generiert (${stadtteileSection.length} Zeichen)`);
+  console.log(`   Stadtteile-Section Länge:`, stadtteileSection.length, 'Zeichen');
+  if (stadtteileSection.length > 0) {
+    console.log(`✅ Stadtteile-Section generiert! Erste 100 Zeichen:`, stadtteileSection.substring(0, 100));
   } else {
-    console.warn(`⚠️ Keine Stadtteile für ${cityName} gefunden!`);
+    console.warn(`⚠️ Stadtteile-Section ist LEER für ${cityName}!`);
   }
   
   // Schema.org JSON generieren
@@ -389,17 +394,32 @@ function renderTemplate(cityData, baseUrl) {
   };
   
   let rendered = template;
+  console.log(`🔄 Starte Ersetzungen...`);
   for (const [placeholder, value] of Object.entries(replacements)) {
     const regex = new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
     const beforeReplace = rendered;
+    const placeholderExists = rendered.includes(placeholder);
+    
     rendered = rendered.replace(regex, value);
     
-    // Debug: Prüfe ob Ersetzung funktioniert hat
-    if (placeholder === '{{STADTTEILE_SECTION}}' && beforeReplace === rendered && value) {
-      console.error(`❌ Ersetzung fehlgeschlagen für ${placeholder}!`);
-      console.error(`Template enthält Platzhalter:`, rendered.includes(placeholder));
-      console.error(`Wert ist:`, value.substring(0, 100));
+    // Debug für STADTTEILE_SECTION
+    if (placeholder === '{{STADTTEILE_SECTION}}') {
+      console.log(`   ${placeholder}:`);
+      console.log(`     - Platzhalter im Template gefunden:`, placeholderExists);
+      console.log(`     - Wert-Länge:`, value ? value.length : 0);
+      console.log(`     - Ersetzung erfolgreich:`, beforeReplace !== rendered);
+      if (beforeReplace === rendered && value && value.length > 0) {
+        console.error(`     ❌ ERSETZUNG FEHLGESCHLAGEN!`);
+        console.error(`     Template-Snippet:`, rendered.substring(rendered.indexOf('{{STADTTEILE_SECTION}}') - 50, rendered.indexOf('{{STADTTEILE_SECTION}}') + 100));
+      }
     }
+  }
+  
+  // Prüfe ob STADTTEILE_SECTION noch im gerenderten HTML ist
+  if (rendered.includes('{{STADTTEILE_SECTION}}')) {
+    console.error(`❌ STADTTEILE_SECTION wurde NICHT ersetzt!`);
+  } else {
+    console.log(`✅ Alle Platzhalter ersetzt`);
   }
   
   // Prüfe ob alle Platzhalter ersetzt wurden
