@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - GutachtenRuhr.de</title>
+    <link rel="stylesheet" href="admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <h1>📊 Analytics Dashboard</h1>
+                <p>GutachtenRuhr.de</p>
+            </div>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="username">Benutzername</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Passwort</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary">Anmelden</button>
+                <div id="login-error" class="error-message" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard" style="display: none;">
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1>📊 Analytics Dashboard</h1>
+                <div class="header-actions">
+                    <select id="date-range" class="date-select">
+                        <option value="today">Heute</option>
+                        <option value="week" selected>Diese Woche</option>
+                        <option value="month">Dieser Monat</option>
+                        <option value="year">Dieses Jahr</option>
+                        <option value="all">Alle Zeit</option>
+                    </select>
+                    <button id="logout-btn" class="btn btn-secondary">Abmelden</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-content">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Besucher</div>
+                        <div class="stat-value" id="stat-visits">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📄</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Seitenaufrufe</div>
+                        <div class="stat-value" id="stat-pageviews">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Ø Verweildauer</div>
+                        <div class="stat-value" id="stat-avgtime">0s</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-info">
+                        <div class="stat-label">Conversions</div>
+                        <div class="stat-value" id="stat-conversions">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Grid -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h2>Traffic-Quellen</h2>
+                    <canvas id="traffic-chart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h2>Conversions</h2>
+                    <canvas id="conversions-chart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h2>Top Seiten</h2>
+                    <canvas id="pages-chart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h2>Geräte-Typen</h2>
+                    <canvas id="devices-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Keywords Table -->
+            <div class="table-card">
+                <h2>Top Suchbegriffe</h2>
+                <div id="keywords-table" class="keywords-table">
+                    <div class="loading">Lade Daten...</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
+
