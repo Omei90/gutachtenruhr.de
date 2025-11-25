@@ -732,15 +732,27 @@ app.post('/api/contact', async (req, res) => {
 // Diese Routen werden von Google besser erkannt als Query-Parameter
 Object.keys(citiesData).forEach(citySlug => {
   app.get(`/kfz-gutachter-${citySlug}`, (req, res) => {
+    console.log(`🏙️ Stadt-Route aufgerufen: /kfz-gutachter-${citySlug}`);
     const baseUrl = `${req.protocol}://${req.get('host')}`;
     const cityData = citiesData[citySlug];
     
     if (!cityData) {
+      console.error(`❌ Stadt-Daten nicht gefunden für: ${citySlug}`);
       return res.status(404).sendFile(path.join(__dirname, 'index.html'));
     }
     
+    console.log(`✅ Stadt-Daten gefunden: ${cityData.name}`);
+    
     try {
       const rendered = renderTemplate(cityData, baseUrl);
+      
+      // Prüfe ob Template korrekt gerendert wurde
+      if (!rendered || rendered.includes('{{H1_TITLE}}')) {
+        console.error(`❌ Template wurde nicht korrekt gerendert für ${citySlug}`);
+        throw new Error('Template-Ersetzung fehlgeschlagen');
+      }
+      
+      console.log(`✅ Template erfolgreich gerendert für ${citySlug}`);
       
       // HTTP-Cache-Header setzen für bessere Performance
       res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 Stunde Cache
@@ -749,7 +761,8 @@ Object.keys(citiesData).forEach(citySlug => {
       
       res.send(rendered);
     } catch (error) {
-      console.error('Fehler beim Rendern des Templates:', error);
+      console.error(`❌ Fehler beim Rendern des Templates für ${citySlug}:`, error);
+      console.error('Stack:', error.stack);
       res.sendFile(path.join(__dirname, 'index.html'));
     }
   });
