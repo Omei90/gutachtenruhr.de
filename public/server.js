@@ -162,7 +162,8 @@ function renderTemplate(cityData, baseUrl) {
   const template = loadTemplate();
   const cityName = cityData.name;
   const citySlug = cityData.slug;
-  const canonicalUrl = cityData ? `${baseUrl}/?stadt=${citySlug}` : baseUrl;
+  // Canonical URL: Verwende jetzt /stadt-slug statt Query-Parameter für bessere SEO
+  const canonicalUrl = cityData ? `${baseUrl}/${citySlug}` : baseUrl;
   
   // OG und Twitter Tags
   const ogTitle = cityData.metaTitle || `Kfz Gutachter ${cityName} | Kostenlos 24h | GutachtenRuhr`;
@@ -532,7 +533,34 @@ app.post('/api/contact', async (req, res) => {
     });
 });
 
-// Root Route - serviere index.html oder stadt-spezifische Version
+// Stadt-spezifische Routen für SEO (z.B. /essen, /koeln)
+// Diese Routen werden von Google besser erkannt als Query-Parameter
+Object.keys(citiesData).forEach(citySlug => {
+  app.get(`/${citySlug}`, (req, res) => {
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const cityData = citiesData[citySlug];
+    
+    if (!cityData) {
+      return res.status(404).sendFile(path.join(__dirname, 'index.html'));
+    }
+    
+    try {
+      const rendered = renderTemplate(cityData, baseUrl);
+      
+      // HTTP-Cache-Header setzen für bessere Performance
+      res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 Stunde Cache
+      res.setHeader('ETag', `"${citySlug}-${Date.now()}"`);
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      
+      res.send(rendered);
+    } catch (error) {
+      console.error('Fehler beim Rendern des Templates:', error);
+      res.sendFile(path.join(__dirname, 'index.html'));
+    }
+  });
+});
+
+// Root Route - serviere index.html oder stadt-spezifische Version (für Query-Parameter)
 app.get('/', (req, res) => {
   const citySlug = req.query.stadt;
   const baseUrl = `${req.protocol}://${req.get('host')}`;
@@ -590,6 +618,12 @@ app.get('/admin', (req, res) => {
 
 app.get('/admin/dashboard.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin', 'index.html'));
+});
+
+// Sitemap
+app.get('/sitemap.xml', (req, res) => {
+  res.setHeader('Content-Type', 'application/xml');
+  res.sendFile(path.join(__dirname, 'sitemap.xml'));
 });
 
 // Health Check
