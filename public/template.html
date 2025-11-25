@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="description" content="{{META_DESCRIPTION}}">
+    <meta name="keywords" content="{{META_KEYWORDS}}">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Carsten Heiken - GutachtenRuhr">
+    <meta name="geo.region" content="DE-NW">
+    <meta name="geo.placename" content="{{CITY_NAME}}, Ruhrgebiet">
+    <meta property="og:title" content="{{OG_TITLE}}">
+    <meta property="og:description" content="{{OG_DESCRIPTION}}">
+    <meta property="og:image" content="https://gutachtenruhr.de/images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="GutachtenRuhr.de - Kfz Gutachter {{CITY_NAME}}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{CANONICAL_URL}}">
+    <meta property="og:locale" content="de_DE">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{TWITTER_TITLE}}">
+    <meta name="twitter:description" content="{{TWITTER_DESCRIPTION}}">
+    <title>{{META_TITLE}}</title>
+    
+    <!-- Fonts - Modern & Clean -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    <!-- Hero-Bild mit höchster Priorität preloaden -->
+    <link rel="preload" href="images/Auto2.JPG" as="image" fetchpriority="high" crossorigin="anonymous">
+    <!-- DNS-Prefetch für bessere Performance -->
+    <link rel="dns-prefetch" href="/images/">
+    
+    <!-- Font Awesome CSS entfernt - Icons werden jetzt als SVG geladen (siehe icons.js) -->
+    <!-- Preconnect für Font Awesome SVG CDN -->
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    
+    <!-- Leaflet CSS - Direkt geladen für bessere Mobile-Kompatibilität -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{CANONICAL_URL}}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "GutachtenRuhr.de",
+      "alternateName": "Kfz Gutachter Ruhrgebiet",
+      "description": "Anerkanntes Kfz Sachverständigenbüro für Kfz-Schadengutachten im gesamten Ruhrgebiet und ganz NRW",
+      "url": "https://procheck-gutachten.de/",
+      "logo": "https://gutachtenruhr.de/images/logo.png",
+      "image": "https://gutachtenruhr.de/images/hero-image.jpg",
+      "telephone": "+4916097089709",
+      "email": "info@gutachtenruhr.de",
+      "serviceType": "Kfz-Schadengutachten im Außendienst",
+      "areaServed": {{AREA_SERVED_JSON}},
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Kfz Gutachten Dienstleistungen",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Kfz Schadengutachten",
+              "description": "Detaillierte Schadensbegutachtung nach Verkehrsunfällen"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Kostenvoranschlag",
+              "description": "Detaillierte Kostenschätzung für Fahrzeugreparaturen"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Wertermittlung / Bewertung",
+              "description": "Detaillierte Fahrzeugbewertung und Wertermittlung"
+            }
+          }
+        ]
+      },
+      "founder": {
+        "@type": "Person",
+        "name": "Carsten Heiken",
+        "jobTitle": "Geschäftsführer",
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "Kfz Techniker Meister"
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "credentialCategory": "Anerkannter Kfz Sachverständiger"
+          }
+        ]
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "100+"
+      },
+      "priceRange": "Kostenlos bei unverschuldetem Unfall",
+      "openingHours": "Mo-Fr 08:00-20:00"
+    }
+    </script>
+    
+    <!-- FAQ Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Was kostet ein Kfz-Gutachten?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bei unverschuldetem Unfall ist unser Kfz-Gutachten für dich kostenlos. Wir rechnen direkt mit der gegnerischen Versicherung ab. Keine Vorkasse, keine Gebühren für dich. Du zahlst nur, wenn du selbst verantwortlich für den Unfall bist."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie schnell wird das Kfz-Gutachten erstellt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Dein vollständiges Kfz-Schadengutachten erhältst du innerhalb von 24 Stunden nach der Schadensbesichtigung. Wir arbeiten schnell und präzise, damit du schnell zu deinem Geld kommst."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Kommst du auch zu mir nach Hause oder zur Werkstatt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja, gerne! Unser zertifizierter Kfz-Gutachter kommt zu dir nach Hause, in die Werkstatt oder direkt zum Unfallort. Wir bieten Vor-Ort-Service im gesamten Ruhrgebiet (50km Umkreis um Oberhausen)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Welche Fahrzeugtypen werden begutachtet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Wir begutachten alle Fahrzeugtypen und -klassen: Pkw, Lkw, Motorräder, Transporter und Nutzfahrzeuge. Unser zertifizierter Kfz-Gutachter hat Erfahrung mit allen Marken und Modellen nach Herstellervorgaben."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was ist der Unterschied zwischen einem Kfz-Gutachten und einem Kostenvoranschlag?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ein Kfz-Schadengutachten ist eine vollständige, detaillierte Schadensbewertung nach Herstellervorgaben. Ein Kostenvoranschlag ist eine schnelle Kalkulation, ideal für Bagatellschäden. Beide sind für Versicherungen anerkannt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ist der Kfz-Gutachter zertifiziert und anerkannt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja! Unser Kfz-Sachverständiger Carsten Heiken ist zertifizierter Kfz Techniker Meister und zertifizierter Kfz Sachverständiger. Unsere Gutachten sind bei allen Versicherungen anerkannt und gerichtsfest."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was passiert nach der Begutachtung?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nach der Begutachtung erstellen wir dein vollständiges Kfz-Gutachten innerhalb von 24h. Unser Partner-Anwalt setzt dann deine Ansprüche gegenüber der Versicherung durch, für dich komplett kostenlos. Du erhältst Wertminderung, Nutzungsausfall und alle weiteren Ansprüche."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "In welchen Städten sind wir tätig?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Wir fahren ganz Nordrhein-Westfalen ab. Wir sind tätig in: Essen, Duisburg, Bochum, Dortmund, Gelsenkirchen, Herne, Wuppertal, Köln, Düsseldorf, Aachen, Bonn, Bielefeld, Münster, Mülheim, Oberhausen, Hagen, Hamm, Mönchengladbach, Krefeld, Solingen, Leverkusen, Neuss, Recklinghausen, Bottrop und allen weiteren Städten in NRW."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Kann ich auch einen Termin am Wochenende bekommen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Wir arbeiten Montag bis Freitag von 8:00 bis 20:00 Uhr. Für dringende Fälle können wir nach Absprache auch flexible Termine anbieten. Kontaktiere uns einfach. Wir finden immer eine Lösung!"
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+<body class="bg-theme-9" itemscope itemtype="https://schema.org/WebPage">
+    <!-- Header - KFZ Theme -->
+    <header class="header header-kfz" id="header" role="banner" itemscope itemtype="https://schema.org/WPHeader">
+        <div class="header-kfz-bg"></div>
+        <div class="container">
+            <div class="header-wrapper-kfz">
+                <!-- Logo Links -->
+                <div class="logo-section-kfz">
+                    <a href="#hero" class="logo-link-kfz">
+                        <div class="logo-text-kfz">
+                            <span class="logo-main-kfz">GutachtenRuhr.de</span>
+                            <span class="logo-tagline-kfz">Kfz Sachverständiger</span>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Navigation Zentriert -->
+                <nav class="nav-desktop-kfz" id="nav-desktop">
+                    <a href="#vorteile" class="nav-link-kfz">Vorteile</a>
+                    <a href="#leistungen" class="nav-link-kfz">Leistungen</a>
+                    <a href="#bewertungen" class="nav-link-kfz">Bewertungen</a>
+                    <a href="#faq" class="nav-link-kfz">FAQ</a>
+                    <a href="#service-gebiet" class="nav-link-kfz">Service-Gebiet</a>
+                </nav>
+
+                <!-- CTA Rechts -->
+                <div class="header-actions-kfz">
+                    <a href="tel:+4916097089709" class="cta-btn-kfz cta-phone-kfz">Anrufen</a>
+                    <a href="#terminbuchung" class="cta-btn-kfz cta-primary-kfz">Termin</a>
+                    <button class="mobile-menu-toggle-kfz" id="mobile-menu-toggle" aria-label="Menü öffnen">
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                        <span class="hamburger-line"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <nav class="nav-mobile" id="nav-mobile">
+            <div class="mobile-nav-header">
+                <div class="mobile-logo">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>GutachtenRuhr</span>
+                </div>
+                <button class="mobile-nav-close" id="mobile-nav-close">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+
+            <div class="mobile-nav-links">
+                <a href="#vorteile" class="mobile-nav-link">
+                    <span>Vorteile</span>
+                </a>
+                <a href="#leistungen" class="mobile-nav-link">
+                    <span>Leistungen</span>
+                </a>
+                <!-- Über uns Link entfernt -->
+                <a href="#bewertungen" class="mobile-nav-link">
+                    <span>Bewertungen</span>
+                </a>
+                <a href="#faq" class="mobile-nav-link">
+                    <span>FAQ</span>
+                </a>
+                <a href="#service-gebiet" class="mobile-nav-link">
+                    <span>Service-Gebiet</span>
+                </a>
+                </div>
+
+            <div class="mobile-nav-footer">
+                <div class="mobile-contact">
+                    <div class="mobile-contact-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>0160 9708 9709</span>
+            </div>
+                    <div class="mobile-contact-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>info@gutachtenruhr.de</span>
+        </div>
+                </div>
+
+                <div class="mobile-cta-group">
+                    <a href="tel:+4916097089709" class="mobile-cta-btn mobile-cta-primary">
+                    <i class="fa-solid fa-phone"></i>
+                    Jetzt anrufen
+                </a>
+                    <a href="https://wa.me/4916097089709" target="_blank" rel="noopener" class="mobile-cta-btn mobile-cta-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    WhatsApp
+                </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sticky Contact Bar -->
+    <div class="sticky-contact-bar" id="sticky-contact-bar">
+        <div class="container">
+            <div class="sticky-content">
+                <div class="sticky-item" data-sticky-item="1">
+                    <i class="fa-solid fa-phone-volume"></i>
+                    <span>Unfall gehabt?</span>
+                </div>
+                <div class="sticky-item" data-sticky-item="2">
+                    <strong>Jetzt kostenlos</strong>
+                </div>
+                <div class="sticky-item" data-sticky-item="3">
+                    <strong>Gutachten</strong>
+                </div>
+                <div class="sticky-item" data-sticky-item="4">
+                    <span>anfragen!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <main role="main" itemscope itemtype="https://schema.org/WebPageElement">
+        <!-- Hero Section - KFZ Gutachter -->
+        <section class="hero-kfz" id="hero">
+            <!-- Background with Image -->
+            <div class="hero-kfz-bg">
+                <picture>
+                    <source srcset="images/Auto2.JPG" media="(max-width: 768px)">
+                    <img src="images/Auto2.JPG"
+                         alt="Kfz Gutachter Carsten Heiken - Professionelle Unfallbegutachtung in ganz NRW"
+                         class="hero-kfz-bg-image"
+                         loading="eager"
+                         fetchpriority="high">
+                </picture>
+                <div class="hero-kfz-gradient-overlay"></div>
+            </div>
+
+            <!-- Hero Content -->
+            <div class="container hero-kfz-container">
+                <!-- Glass Container für gesamten Inhalt -->
+                <div class="hero-kfz-glass-container">
+                    <!-- Left: Content -->
+                    <div class="hero-kfz-content">
+                    <!-- Badge -->
+                    <div class="hero-kfz-badges-wrapper">
+                        <div class="hero-kfz-badge hero-kfz-badge-1">
+                            <i class="fa-solid fa-car-burst"></i>
+                            <span class="badge-text">Anerkannter Kfz Sachverständiger</span>
+                        </div>
+                        <div class="hero-kfz-badge hero-kfz-badge-2">
+                            <i class="fa-solid fa-wrench"></i>
+                            <span class="badge-text">Kfz Technikermeister</span>
+                        </div>
+                    </div>
+
+                    <!-- Main Title -->
+                    <h1 class="hero-kfz-title">
+                        <span class="title-main">{{H1_TITLE}}</span>
+                        <span class="title-highlight">{{HERO_TEXT}}</span>
+                        <span class="title-subtitle">Schadenaufnahme vor Ort – flexibel an deinem Wunschort. Kostenlos für dich als Geschädigten</span>
+                    </h1>
+
+                    <!-- Trust-Bereich -->
+                    <div class="hero-kfz-trust">
+                        <span class="trust-stars">⭐⭐⭐⭐⭐</span>
+                        <span class="trust-rating">4,9/5</span>
+                        <span class="trust-separator">–</span>
+                        <span class="trust-text">über 350 echte Kundenbewertungen</span>
+                    </div>
+
+                    <!-- 5-Schritte-Erklärung - Minimalistisch ohne Cards -->
+                    <h2 class="hero-kfz-steps-title">So funktioniert's</h2>
+                    <div class="hero-kfz-steps">
+                        <div class="hero-kfz-step">
+                            <div class="step-number-badge">01</div>
+                            <div class="step-content">
+                                <h3 class="step-title">
+                                    Kontakt aufnehmen
+                                </h3>
+                                <p class="step-description">Per Telefon, WhatsApp oder online</p>
+                            </div>
+                        </div>
+                        <div class="hero-kfz-step">
+                            <div class="step-number-badge">02</div>
+                            <div class="step-content">
+                                <h3 class="step-title">
+                                    Termin vereinbaren
+                                </h3>
+                                <p class="step-description">Flexibel und überall in NRW</p>
+                            </div>
+                        </div>
+                        <div class="hero-kfz-step">
+                            <div class="step-number-badge">03</div>
+                            <div class="step-content">
+                                <h3 class="step-title">
+                                    Schadenaufnahme
+                                </h3>
+                                <p class="step-description">Direkte Begutachtung beim Kunden oder in der Werkstatt</p>
+                            </div>
+                        </div>
+                        <div class="hero-kfz-step">
+                            <div class="step-number-badge">04</div>
+                            <div class="step-content">
+                                <h3 class="step-title">
+                                    Gutachten erhalten
+                                </h3>
+                                <p class="step-description">Innerhalb von 48 Stunden</p>
+                            </div>
+                        </div>
+                        <div class="hero-kfz-step">
+                            <div class="step-number-badge">05</div>
+                            <div class="step-content">
+                                <h3 class="step-title">
+                                    Anwalt
+                                </h3>
+                                <p class="step-description">Abwicklung durch Anwalt bis vollständiger Schadenersatz</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="hero-kfz-actions">
+                        <a href="#terminbuchung" class="kfz-btn kfz-btn-primary">
+                            <span class="btn-text">zum Online-Terminplaner</span>
+                            <span class="btn-icon">
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </span>
+                        </a>
+                        <div class="hero-kfz-actions-row">
+                            <a href="tel:+4916097089709" class="kfz-btn kfz-btn-phone">
+                                <span class="btn-icon">
+                                    <i class="fa-solid fa-phone"></i>
+                                </span>
+                                <span class="btn-text">Anrufen</span>
+                            </a>
+                            <a href="https://wa.me/4916097089709" target="_blank" rel="noopener" class="kfz-btn kfz-btn-whatsapp">
+                                <span class="btn-icon">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </span>
+                                <span class="btn-text">WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Optional: Schneller Service Text -->
+                    <p class="hero-kfz-fast-service">
+                        Wir sind meistens schon in 60–90 Minuten bei dir vor Ort. Und das NRW-weit.
+                    </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Advantages Section - Technisch Modern -->
+        <section class="advantages strengths-tech" id="vorteile" aria-labelledby="advantages-title">
+            <div class="container">
+                <header class="header">
+                    <h2 id="advantages-title">Dein Experte für Kfz-Gutachten nach Unfällen</h2>
+                </header>
+
+                <div class="grid">
+                    <!-- Linke Portfolio-Card: Geschäftsführer -->
+                    <article class="hero-card">
+                        <img src="images/Auto2.JPG" alt="Carsten Heiken - Kfz-Sachverständiger" class="hero-img" onclick="openPortfolioModal()" style="cursor: pointer;" role="button" tabindex="0" aria-label="Portfolio-Bild vergrößern">
+                        <div class="hero-body">
+                            <div class="badge">
+                                <i class="fa-solid fa-certificate"></i>
+                                Kfz-Technikermeister
+                            </div>
+                            <div class="name-with-certificate">
+                                <div class="name-and-credentials">
+                                    <h3>Carsten Heiken</h3>
+                                    <div class="credentials">
+                                        <div class="credential-item">
+                                            <i class="fa-solid fa-check-circle"></i>
+                                            <span>Anerkannter Kfz-Sachverständiger</span>
+                                        </div>
+                                        <div class="credential-item">
+                                            <i class="fa-solid fa-check-circle"></i>
+                                            <span>Geprüfter Kraftfahrzeugtechnikermeister seit 2013</span>
+                                        </div>
+                                        <div class="credential-item">
+                                            <i class="fa-solid fa-check-circle"></i>
+                                            <span>Geschäftsführer GutachtenRuhr.de</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="meisterbrief-image-wrapper" onclick="openMeisterbriefModal()" style="cursor: pointer;" role="button" tabindex="0" aria-label="Meisterbrief vergrößern">
+                                    <img src="images/Meisterbrief.jpg" alt="Meisterbrief Kraftfahrzeugtechnikermeister - Carsten Heiken seit 2013" class="meisterbrief-image" loading="lazy">
+                                </div>
+                            </div>
+                            <p class="personal-message">Seit über zehn Jahren stehen wir Menschen in ganz NRW als zuverlässige Kfz-Schadengutachter zur Seite. In dieser Zeit haben wir mehr als 1.200 Gutachten erstellt – Erfahrung, auf die du dich verlassen kannst.<br><br>Unser fünfköpfiges Team analysiert jeden Unfallschaden bis ins kleinste Detail und setzt sich dafür ein, dass du deine vollständige Entschädigung erhältst. Wir halten dich jederzeit informiert, erklären alle Schritte verständlich und übernehmen sämtliche Formalitäten – vom ersten Kontakt bis zur Auszahlung.<br><br>Kurz gesagt: Du kannst dich entspannt zurücklehnen. Wir kümmern uns um deinen gesamten Schadenfall und sorgen dafür, dass du bekommst, was dir zusteht.</p>
+
+                            <div class="key-metrics">
+                                <div class="metric">
+                                    <strong>4,9★</strong>
+                                    <span>Bewertung</span>
+                                </div>
+                                <div class="metric">
+                                    <strong>1.200+</strong>
+                                    <span>Gutachten</span>
+                                </div>
+                                <div class="metric">
+                                    <strong>+10</strong>
+                                    <span>Jahre Erfahrung</span>
+                                </div>
+                            </div>
+
+                            <div class="cta-group">
+                                <a href="#terminbuchung" class="btn btn-primary">
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                    Termin vereinbaren
+                                </a>
+                                <a href="tel:+4916097089709" class="kfz-btn kfz-btn-phone">
+                                    <span class="btn-icon">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </span>
+                                    <span class="btn-text">Anrufen</span>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Rechte Features -->
+                    <div class="features">
+                        <!-- Reihe 1: Modernste Messtechnik (volle Breite) -->
+                        <article class="feature feature-tech">
+                            <div class="icon-wrapper">
+                                <i class="fa-solid fa-microscope"></i>
+                            </div>
+                            <h3>Modernste Messtechnik</h3>
+                            <div class="tech-list">
+                                <div class="tech-list-item">
+                                    <i class="fa-solid fa-magnet"></i>
+                                    <span>Lackschichtdickenmessung per Magnet-Induktion</span>
+                                </div>
+                                <div class="tech-list-item">
+                                    <i class="fa-solid fa-video"></i>
+                                    <span>Endoskopiekamera für versteckte Schäden</span>
+                                </div>
+                                <div class="tech-list-item">
+                                    <i class="fa-solid fa-tablet-screen-button"></i>
+                                    <span>Digitale Schadenaufnahme per Tablet</span>
+                                </div>
+                                <div class="tech-list-item">
+                                    <i class="fa-solid fa-microchip"></i>
+                                    <span>OBD-Diagnosegerät zum Fehlerspeicher auslesen</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Reihe 2: Alle Fahrzeugklassen (volle Breite) -->
+                        <article class="feature feature-vehicles">
+                            <div class="icon-wrapper">
+                                <i class="fa-solid fa-car-side"></i>
+                            </div>
+                            <h3>Alle Fahrzeugtypen</h3>
+                            <p class="feature-description">Egal ob dein Auto, Motorrad oder sogar dein Fahrrad - wir helfen bei allen Fahrzeugen.</p>
+                            <div class="vehicle-types-grid">
+                                <div class="vehicle-type-item">
+                                    <i class="fa-solid fa-car"></i>
+                                    <span>PKW</span>
+                                </div>
+                                <div class="vehicle-type-item">
+                                    <i class="fa-solid fa-truck"></i>
+                                    <span>LKW</span>
+                                </div>
+                                <div class="vehicle-type-item">
+                                    <i class="fa-solid fa-motorcycle"></i>
+                                    <span>Motorrad</span>
+                                </div>
+                                <div class="vehicle-type-item">
+                                    <i class="fa-solid fa-van-shuttle"></i>
+                                    <span>Transporter</span>
+                                </div>
+                                <div class="vehicle-type-item">
+                                    <i class="fa-solid fa-bicycle"></i>
+                                    <span>Fahrräder & E-Bikes</span>
+                                </div>
+                                <div class="vehicle-type-item">
+                                    <i class="fa-solid fa-person-skating"></i>
+                                    <span>E-Scooter</span>
+                                </div>
+                                <div class="vehicle-type-item">
+                                    <i class="fa-solid fa-truck-monster"></i>
+                                    <span>Quads</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <!-- Reihe 3: Links - 100% kostenfrei -->
+                        <article class="feature">
+                            <div class="icon-wrapper">
+                                <i class="fa-solid fa-euro-sign"></i>
+                            </div>
+                            <h3>100 % kostenfrei für dich</h3>
+                            <p>Bei einem unverschuldeten Unfall trägt die gegnerische Versicherung alle Kosten – inklusive Gutachten und Fachanwalt für Verkehrsrecht. Wir vermitteln dich sofort an spezialisierte Anwälte.</p>
+                        </article>
+
+                        <!-- Reihe 3: Rechts - Maximale Entschädigung -->
+                        <article class="feature">
+                            <div class="icon-wrapper">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <h3>Maximale Entschädigung</h3>
+                            <p>Wir kämpfen für dich und holen das Maximum heraus. Inklusive Wertminderung, Nutzungsausfall und alle versteckten Ansprüche.</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services" id="leistungen" aria-labelledby="services-title">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge">Unsere Leistungen</span>
+                    <h2 id="services-title" class="section-title">Unsere Leistungen in ganz NRW</h2>
+                </div>
+                <div class="services-grid">
+                    <article class="service-card">
+                        <div class="service-icon-wrapper">
+                            <i class="fa-solid fa-car-burst"></i>
+                        </div>
+                        <h3>Kfz Schadengutachten</h3>
+                        <p>
+                            Wir machen eine detaillierte Schadenanalyse genau nach Herstellervorgaben. Alles wird versicherungsfest und gerichtsfest dokumentiert.
+                        </p>
+                        <ul class="service-features">
+                            <li><i class="fa-solid fa-check"></i> Vollständige Beweissicherung</li>
+                            <li><i class="fa-solid fa-check"></i> Reparaturkosten &amp; Wertminderung</li>
+                            <li><i class="fa-solid fa-check"></i> Nutzungsausfall &amp; Restwert</li>
+                        </ul>
+                    </article>
+                    <article class="service-card">
+                        <div class="service-icon-wrapper">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                        </div>
+                        <h3>Kostenvoranschläge</h3>
+                        <p>
+                            Bei kleineren Schäden erstellen wir schnelle, digitale Kalkulationen. Das ist ideal für Bagatellschäden und spart dir Zeit.
+                        </p>
+                        <ul class="service-features">
+                            <li><i class="fa-solid fa-check"></i> Schnelle digitale Abwicklung</li>
+                            <li><i class="fa-solid fa-check"></i> Versicherungskonforme Bewertung</li>
+                            <li><i class="fa-solid fa-check"></i> Transparente Kostenübersicht</li>
+                        </ul>
+                    </article>
+                    <article class="service-card">
+                        <div class="service-icon-wrapper">
+                            <i class="fa-solid fa-car-side"></i>
+                        </div>
+                        <h3>Wertermittlungen / Bewertungen</h3>
+                        <p>
+                            Wir machen eine faire und marktgerechte Bewertung deines Fahrzeugs. Ob für den Verkauf, Ankauf oder deine Versicherung - immer transparent und ehrlich.
+                        </p>
+                        <ul class="service-features">
+                            <li><i class="fa-solid fa-check"></i> Marktwert- und Zustandsanalyse</li>
+                            <li><i class="fa-solid fa-check"></i> Neutral und unabhängig</li>
+                            <li><i class="fa-solid fa-check"></i> Schriftliches Gutachten inklusive</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Image Gallery Section -->
+        <section class="image-gallery" id="galerie" aria-labelledby="gallery-title">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge">Schadensbeispiele</span>
+                    <h2 id="gallery-title" class="section-title">Einblick in unsere Kfz-Schadensdokumentation</h2>
+                    <p class="section-subtitle">Ausgewählte Beispiele unserer Gutachten und Schadensbegutachtungen aus ganz NRW.</p>
+                </div>
+                
+                <!-- Bildergalerie - Desktop Grid / Mobile Swipe Slider -->
+                <div class="gallery-grid-2x3" id="gallery-container">
+                    <div class="gallery-grid-item" data-image="sam-4377">
+                        <img src="images/accidents/SAM_4377.JPG" alt="Kfz Gutachter Oberhausen - Unfallschaden Begutachtung nach Verkehrsunfall durch zertifizierten Kfz Sachverständigen" loading="lazy" decoding="async">
+                    </div>
+                    <div class="gallery-grid-item" data-image="sam-4370">
+                        <img src="images/accidents/SAM_4370.JPG" alt="Kfz Gutachter Ruhrgebiet - Professionelle Schadensbegutachtung durch Team von GutachtenRuhr.de" loading="lazy" decoding="async">
+                    </div>
+                    <div class="gallery-grid-item" data-image="sam-2292">
+                        <img src="images/accidents/SAM_2292.JPG" alt="Kfz Gutachten Beispiel - Zertifiziertes Team von GutachtenRuhr.de dokumentiert Fahrzeugschaden" loading="lazy" decoding="async">
+                    </div>
+                    <div class="gallery-grid-item" data-image="sam-2808">
+                        <img src="images/accidents/SAM_2808.JPG" alt="Kfz Gutachten Schadensbeispiel - Professionelle Schadensdokumentation durch GutachtenRuhr.de Team" loading="lazy" decoding="async">
+                    </div>
+                    <div class="gallery-grid-item" data-image="img-0012">
+                        <img src="images/accidents/IMG-20250817-WA0012.jpg" alt="Kfz Gutachten Beispiel - Professionelle Unfallschaden Dokumentation für Versicherung von GutachtenRuhr.de" loading="lazy" decoding="async">
+                    </div>
+                    <div class="gallery-grid-item" data-image="img-0017">
+                        <img src="images/accidents/IMG-20250819-WA0017.jpg" alt="Kfz Gutachten Schadensbeispiel - Zertifiziertes Team von GutachtenRuhr.de dokumentiert Fahrzeugschaden" loading="lazy" decoding="async">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advantages & Process wurden weiter oben neu strukturiert -->
+
+        <!-- Appointment Booking Section -->
+        <section class="appointment-section" id="terminbuchung" aria-labelledby="appointment-title">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge">Terminbuchung</span>
+                    <h2 id="appointment-title" class="section-title">Buche jetzt deinen Wunschtermin für dein Gutachten</h2>
+                    <p class="section-subtitle">Wähle deinen passenden Termin für die Schadensbegutachtung. Einer unserer erfahrenen Gutachter kommt persönlich zu dir und kümmert sich um alles.</p>
+                </div>
+                <div class="appointment-container">
+                    <div class="appointment-content-compact">
+                        <div class="appointment-calendar-compact">
+                            <div class="calendar-header">
+                                <button class="calendar-nav" id="prev-month" aria-label="Vorheriger Monat">
+                                    <i class="fa-solid fa-chevron-left"></i>
+                                </button>
+                                <h3 class="calendar-month" id="calendar-month"></h3>
+                                <button class="calendar-nav" id="next-month" aria-label="Nächster Monat">
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-grid" id="calendar-grid"></div>
+                            <div class="calendar-info">
+                                <div class="info-item">
+                                    <span class="info-dot available"></span>
+                                    <span>Verfügbar</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-dot today"></span>
+                                    <span>Heute</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Appointment Form - Aufklappbar unter Kalender -->
+                        <div class="appointment-form-wrapper" id="appointment-form-wrapper">
+                            <div class="appointment-form-header">
+                                <h3>Deine Termindaten für das Gutachten</h3>
+                                <button type="button" class="appointment-form-toggle" id="appointment-form-toggle" aria-label="Formular schließen">
+                                    <i class="fa-solid fa-chevron-up"></i>
+                                </button>
+                            </div>
+                            <form class="appointment-form" id="appointment-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="appointment-name">Dein Name *</label>
+                                    <input type="text" id="appointment-name" name="name" placeholder="Max Mustermann" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="appointment-email">Deine E-Mail *</label>
+                                    <input type="email" id="appointment-email" name="email" placeholder="name@mail.de" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="appointment-phone">Deine Telefonnummer *</label>
+                                    <input type="tel" id="appointment-phone" name="phone" placeholder="0160 9708 9709" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="appointment-date-display">Wunschtermin *</label>
+                                    <input type="text" id="appointment-date-display" readonly placeholder="Bitte wähle ein Datum">
+                                    <input type="hidden" id="appointment-date" name="date" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="appointment-time">Uhrzeit *</label>
+                                    <select id="appointment-time" name="time" required>
+                                        <option value="">Bitte wähle eine Uhrzeit</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="appointment-callback">Bevorzugte Rückrufzeit</label>
+                                    <select id="appointment-callback" name="callbackTime">
+                                        <option value="flexibel">Flexibel</option>
+                                        <option value="sofort">Sofort</option>
+                                        <option value="08:00-12:00">Vormittag (08:00-12:00)</option>
+                                        <option value="12:00-14:00">Mittag (12:00-14:00)</option>
+                                        <option value="14:00-18:00">Nachmittag (14:00-18:00)</option>
+                                        <option value="18:00-20:00">Abend (18:00-20:00)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointment-service">Dienstleistungsart *</label>
+                                <select id="appointment-service" name="service" required>
+                                    <option value="">Bitte wähle eine Dienstleistung</option>
+                                    <option value="kfz-schadengutachten">Kfz Schadengutachten</option>
+                                    <option value="kostenvoranschlag">Kostenvoranschlag</option>
+                                    <option value="wertermittlung">Wertermittlung / Bewertung</option>
+                                    <option value="unsicher">Weiß nicht genau</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointment-vehicle">Fahrzeuginfo (optional)</label>
+                                <input type="text" id="appointment-vehicle" name="vehicleInfo" placeholder="z.B. BMW 3er, Kennzeichen: B-AB 1234">
+                            </div>
+                            <div class="form-group">
+                                <label for="appointment-message">Nachricht (optional)</label>
+                                <textarea id="appointment-message" name="message" rows="2" placeholder="Kurz den Schaden beschreiben oder weitere Informationen"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-large" id="submit-appointment">
+                                <i class="fa-solid fa-calendar-check"></i>
+                                Termin anfragen
+                            </button>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section class="reviews" id="bewertungen" aria-labelledby="reviews-title">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge">Kundenstimmen</span>
+                    <h2 id="reviews-title" class="section-title">Was unsere Kunden sagen</h2>
+                    <p class="section-subtitle">Über 1000 zufriedene Kunden im gesamten Ruhrgebiet</p>
+                </div>
+                <div class="reviews-grid">
+                    <article class="review-card">
+                        <div class="review-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="review-text">"Super schnelle und kompetente Hilfe nach meinem Autounfall. Das Kfz-Gutachten war wirklich zügig fertig und total detailliert. Freundliche Leute und alles lief total unkompliziert. Vielen Dank!"</p>
+                        <div class="review-author">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Ewelina I., 15. August 2025</span>
+                        </div>
+                    </article>
+                    <article class="review-card">
+                        <div class="review-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="review-text">"Unfassbar netter Kontakt und superschnelle Antworten. Kompetente Hilfe beim Kfz-Gutachten und alles war innerhalb von 24 Stunden fertig. Kann ich zu 100% weiterempfehlen!"</p>
+                        <div class="review-author">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Fabian S., 10. Juli 2025</span>
+                        </div>
+                    </article>
+                    <article class="review-card">
+                        <div class="review-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i>
+                        </div>
+                        <p class="review-text">"Nach meinem Unfall war ich total verunsichert wegen der gegnerischen Versicherung. Nach dem ersten Gespräch mit Herrn Heiken hatte ich endlich das Gefühl, dass jemand wirklich auf meiner Seite steht. Alles wurde total verständlich erklärt und ich musste mich um fast gar nichts mehr kümmern."</p>
+                        <div class="review-author">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Markus R., 3. Juni 2025</span>
+                        </div>
+                    </article>
+                </div>
+                <div class="reviews-grid reviews-grid-more" id="more-reviews" style="display: none;">
+                    <article class="review-card">
+                        <div class="review-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="review-text">"Terminvereinbarung abends per WhatsApp, am nächsten Tag war der Gutachter schon bei mir vor Ort. Besonders gut fand ich, dass auch auf meine Sorgen eingegangen wurde – nicht nur auf die Technik. Am Ende kam deutlich mehr Entschädigung raus, als ich erwartet hatte."</p>
+                        <div class="review-author">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Sarah W., 22. Mai 2025</span>
+                        </div>
+                    </article>
+                    <article class="review-card">
+                        <div class="review-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="review-text">"Ich hatte vorher noch nie mit einem Gutachter zu tun und war ehrlich gesagt etwas skeptisch. Aber hier war wirklich alles super transparent. Jeder Schritt wurde genau erklärt, ich konnte jederzeit nachfragen und habe das Gutachten sogar digital zugeschickt bekommen. Absolut professionell und trotzdem total menschlich."</p>
+                        <div class="review-author">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Deniz K., 4. April 2025</span>
+                        </div>
+                    </article>
+                    <article class="review-card">
+                        <div class="review-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i>
+                        </div>
+                        <p class="review-text">"Mein Auto ist mir wirklich sehr wichtig, und der Schaden sah zuerst gar nicht so schlimm aus. Im Gutachten wurden dann viele Details sichtbar, an die ich selbst nie gedacht hätte. Genau das hat mir später in der Abwicklung mit der Versicherung total den Rücken freigehalten."</p>
+                        <div class="review-author">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Laura S., 18. März 2025</span>
+                        </div>
+                    </article>
+                </div>
+                <div class="reviews-toggle-wrapper">
+                    <button type="button" class="btn btn-secondary reviews-toggle" id="reviews-toggle">
+                        Weitere Kundenstimmen anzeigen
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="faq-section" id="faq" aria-labelledby="faq-title">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge">Häufige Fragen</span>
+                    <h2 id="faq-title" class="section-title">Fragen & Antworten zu Kfz-Gutachten</h2>
+                    <p class="section-subtitle">Alles was du über unser Kfz-Gutachten Service wissen musst</p>
+                </div>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Was kostet ein Kfz-Gutachten?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Bei unverschuldetem Unfall ist unser Kfz-Gutachten für dich <strong>kostenlos</strong>. Wir regeln die Abrechnung direkt mit der gegnerischen Versicherung. Keine Vorkasse, keine Gebühren für dich. Du zahlst nur, wenn du selbst verantwortlich für den Unfall bist.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Wie schnell wird das Kfz-Gutachten erstellt?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Dein detailliertes Kfz-Schadengutachten erhältst du <strong>innerhalb von 24 Stunden</strong> nach der Schadensbesichtigung. Wir arbeiten zügig und präzise, damit du unverzüglich zu deinem Geld kommst.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Kommst du auch zu mir nach Hause oder zur Werkstatt?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Ja, gerne! Unser zertifizierter Kfz-Gutachter kommt zu dir nach Hause, in die Werkstatt oder direkt zum Unfallort. Wir bieten <strong>Vor-Ort-Service</strong> im gesamten Ruhrgebiet (50km Umkreis um Oberhausen).</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Welche Fahrzeugtypen werden begutachtet?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Wir begutachten alle Fahrzeugtypen und -klassen: Pkw, Lkw, Motorräder, Transporter und Nutzfahrzeuge. Unser zertifizierter Kfz-Gutachter hat Erfahrung mit allen Marken und Modellen nach Herstellervorgaben.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Ist der Kfz-Gutachter zertifiziert und anerkannt?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Ja! Unser Kfz-Sachverständiger Carsten Heiken ist <strong>zertifizierter Kfz Techniker Meister</strong> und <strong>zertifizierter Kfz Sachverständiger</strong>. Unsere Gutachten sind bei allen Versicherungen anerkannt und gerichtsfest.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Was passiert nach der Begutachtung?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Nach der Begutachtung erstellen wir dein detailliertes Kfz-Gutachten innerhalb von 24h. Unser Partner-Anwalt setzt dann deine Ansprüche gegenüber der Versicherung durch, <strong>für dich komplett kostenlos</strong>. Du erhältst Wertminderung, Nutzungsausfall und sämtliche weiteren Ansprüche.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Service Area Section -->
+        <section class="service-area" id="service-gebiet" aria-labelledby="service-area-title">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-badge">Service-Gebiet</span>
+                    <h2 id="service-area-title" class="section-title">Unser Service-Gebiet: Kfz Gutachter in ganz Nordrhein-Westfalen</h2>
+                    <p class="section-subtitle">Wir fahren ganz Nordrhein-Westfalen ab. Vor-Ort-Service in folgenden Städten:</p>
+                </div>
+                
+                <!-- Digitale Karte -->
+                <div id="service-area-map"></div>
+                
+                <!-- Städte-Text unter der Karte -->
+                <div class="service-area-cities-text">
+                    <ul class="service-area-cities-list">
+                        <li>
+                            <span class="service-area-city-name">Kfz Gutachter Essen</span>
+                            <span class="service-area-city-desc">Vor-Ort-Service für Kfz-Gutachten in Essen</span>
+                        </li>
+                        <li>
+                            <span class="service-area-city-name">Kfz Gutachter Köln</span>
+                            <span class="service-area-city-desc">Kfz Gutachten in Köln und Umgebung</span>
+                        </li>
+                        <li>
+                            <span class="service-area-city-name">Kfz Gutachter Düsseldorf</span>
+                            <span class="service-area-city-desc">Schadensbegutachtung in Düsseldorf und Umgebung</span>
+                        </li>
+                        <li>
+                            <span class="service-area-city-name">Kfz Gutachter Dortmund</span>
+                            <span class="service-area-city-desc">Kfz Schadengutachten in Dortmund und Umgebung</span>
+                        </li>
+                        <li>
+                            <span class="service-area-city-name">Kfz Gutachter Bochum</span>
+                            <span class="service-area-city-desc">Schadensbegutachtung in Bochum und Umgebung</span>
+                        </li>
+                        <li>
+                            <span class="service-area-city-name">Kfz Gutachter Duisburg</span>
+                            <span class="service-area-city-desc">Kfz Gutachten in Duisburg und Umgebung</span>
+                        </li>
+                        <li>
+                            <span class="service-area-city-name">Kfz Gutachter Oberhausen</span>
+                            <span class="service-area-city-desc">Kfz Schadengutachten in Oberhausen und Umgebung</span>
+                        </li>
+                        <li>
+                            <span class="service-area-city-name">Kfz Gutachter Mülheim</span>
+                            <span class="service-area-city-desc">Kfz-Gutachten in Mülheim an der Ruhr und Umgebung</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-brand">
+                    <div class="footer-logo">
+                        <h3>GutachtenRuhr.de</h3>
+                    </div>
+                    <p class="footer-description">Dein zertifizierter Kfz Sachverständiger für ganz Nordrhein-Westfalen. Schnell, fair und vor Ort – kostenlos bei unverschuldetem Unfall.</p>
+                    <div class="footer-badges">
+                        <div class="footer-badge">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>Zertifiziert</span>
+                        </div>
+                        <div class="footer-badge">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>24h Service</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>
+                        Leistungen
+                    </h4>
+                    <ul>
+                        <li><a href="#leistungen">Kfz Schadengutachten</a></li>
+                        <li><a href="#vorteile">Vorteile</a></li>
+                        <!-- Über uns Link entfernt -->
+                        <li><a href="#bewertungen">Bewertungen</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#service-gebiet">Service-Gebiet</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section footer-contact">
+                    <h4>
+                        Kontakt
+                    </h4>
+                    <ul>
+                        <li><a href="tel:+4916097089709">0160 9708 9709</a></li>
+                        <li><a href="mailto:info@gutachtenruhr.de">info@gutachtenruhr.de</a></li>
+                        <li><a href="https://wa.me/4916097089709" target="_blank" rel="noopener">WhatsApp</a></li>
+                        <li>Mo–Fr 8–20 Uhr</li>
+                        <li>Oberhausen & ganz NRW</li>
+                    </ul>
+                </div>
+                <div class="footer-section footer-form">
+                    <h4>
+                        Nachricht senden
+                    </h4>
+                    <form class="footer-contact-form" id="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Dein Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Deine E-Mail" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" name="phone" placeholder="Telefonnummer" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" rows="2" placeholder="Nachricht (optional)"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary footer-form-btn">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Absenden
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Impressum Section im Footer -->
+            <div class="footer-impressum" id="impressum">
+                <div class="impressum-content" id="impressum-content">
+                    <div class="impressum-grid">
+                        <div class="impressum-block">
+                            <h3>Angaben gemäß § 5 TMG</h3>
+                            <p>
+                                <strong>Carsten Heiken</strong><br>
+                                Kraftfahrzeugtechnikermeister<br>
+                                Anerkannter Kfz Sachverständiger<br>
+                                GutachtenRuhr<br>
+                                Preußenstraße 32<br>
+                                46149 Oberhausen<br>
+                                Deutschland
+                            </p>
+                        </div>
+                        <div class="impressum-block">
+                            <h3>Kontakt</h3>
+                            <p>
+                                Telefon: <a href="tel:+4916097089709">0160 9708 9709</a><br>
+                                E-Mail: <a href="mailto:info@gutachtenruhr.de">info@gutachtenruhr.de</a><br>
+                                WhatsApp: <a href="https://wa.me/4916097089709" target="_blank" rel="noopener">+49 160 9708 9709</a>
+                            </p>
+                        </div>
+                        <div class="impressum-block">
+                            <h3>Berufsbezeichnung</h3>
+                            <p>
+                                Kraftfahrzeugtechnikermeister<br>
+                                Anerkannter Kfz Sachverständiger
+                            </p>
+                        </div>
+                        <div class="impressum-block">
+                            <h3>Haftungsausschluss</h3>
+                            <h4>Haftung für Inhalte</h4>
+                            <p>Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
+                            <h4>Haftung für Links</h4>
+                            <p>Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+                            <h4>Urheberrecht</h4>
+                            <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 GutachtenRuhr. Alle Rechte vorbehalten.</p>
+            </div>
+        </div>
+    </footer>
+    
+
+    <!-- Bottom Navigation Mobile -->
+    <nav class="bottom-nav-mobile" id="bottom-nav-mobile">
+        <a href="#hero" class="bottom-nav-item active">
+            <i class="fa-solid fa-home bottom-nav-icon"></i>
+            <span class="bottom-nav-text">Start</span>
+        </a>
+        <a href="#terminbuchung" class="bottom-nav-item">
+            <i class="fa-solid fa-calendar-check bottom-nav-icon"></i>
+            <span class="bottom-nav-text">Terminer</span>
+        </a>
+        <button class="bottom-nav-item bottom-nav-menu-btn" id="bottom-nav-menu-btn" type="button" aria-label="Menü öffnen">
+            <i class="fa-solid fa-bars bottom-nav-icon"></i>
+            <span class="bottom-nav-text">Menü</span>
+        </button>
+        <a href="https://wa.me/4916097089709" target="_blank" rel="noopener" class="bottom-nav-item">
+            <i class="fa-brands fa-whatsapp bottom-nav-icon"></i>
+            <span class="bottom-nav-text">WhatsApp</span>
+        </a>
+        <a href="tel:+4916097089709" class="bottom-nav-item">
+            <i class="fa-solid fa-phone bottom-nav-icon"></i>
+            <span class="bottom-nav-text">Telefon</span>
+        </a>
+    </nav>
+    
+    <!-- Bottom Nav Dropdown Menu -->
+    <div class="bottom-nav-dropdown" id="bottom-nav-dropdown">
+        <div class="bottom-nav-dropdown-content">
+            <a href="#vorteile" class="bottom-nav-dropdown-item">
+                <span>Vorteile</span>
+            </a>
+            <a href="#leistungen" class="bottom-nav-dropdown-item">
+                <span>Leistungen</span>
+            </a>
+            <!-- Über uns Eintrag entfernt -->
+            <a href="#galerie" class="bottom-nav-dropdown-item">
+                <span>Bilder</span>
+            </a>
+            <a href="#bewertungen" class="bottom-nav-dropdown-item">
+                <span>Bewertungen</span>
+            </a>
+            <a href="#faq" class="bottom-nav-dropdown-item">
+                <span>FAQ</span>
+            </a>
+            <a href="#service-gebiet" class="bottom-nav-dropdown-item">
+                <span>Service-Gebiet</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- Leaflet JS - Direkt geladen für bessere Mobile-Kompatibilität -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Icon Helper (lädt SVG-Icons von Font Awesome CDN) -->
+    <script src="icons.js"></script>
+    
+    <!-- Main Script -->
+    <script src="script.js"></script>
+    <script src="hero-theme-switcher.js"></script>
+
+    <!-- Lightbox für Gallery -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Kfz Gutachten Bildansicht - Vergrößerte Ansicht des ausgewählten Bildes">
+        </div>
+    </div>
+
+    <!-- Gallery Lightbox wird jetzt in script.js initialisiert -->
+    
+    <!-- Meisterbrief Lightbox -->
+    <div id="meisterbrief-lightbox" class="meisterbrief-lightbox">
+        <span class="meisterbrief-lightbox-close">&times;</span>
+        <div class="meisterbrief-lightbox-content">
+            <img src="images/Meisterbrief.jpg" alt="Meisterbrief Kraftfahrzeugtechnikermeister - Carsten Heiken seit 2013 - Vergrößerte Ansicht">
+        </div>
+    </div>
+    
+    <!-- Portfolio Lightbox -->
+    <div id="portfolio-lightbox" class="portfolio-lightbox">
+        <span class="portfolio-lightbox-close">&times;</span>
+        <div class="portfolio-lightbox-content">
+            <img src="images/Auto2.JPG" alt="Carsten Heiken - Kfz-Sachverständiger - Vergrößerte Ansicht">
+        </div>
+    </div>
+</body>
+</html>
+
+

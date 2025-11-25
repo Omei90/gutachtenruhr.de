@@ -1,0 +1,68 @@
+# GutachtenRuhr.de - Apache Konfiguration
+
+# UTF-8 Encoding
+AddDefaultCharset UTF-8
+
+# PHP Dateien ausführen
+<FilesMatch "\.php$">
+    SetHandler application/x-httpd-php
+</FilesMatch>
+
+# Stelle sicher dass PHP aktiviert ist
+AddType application/x-httpd-php .php
+AddHandler application/x-httpd-php .php
+
+# JSON Dateien erlauben
+<FilesMatch "\.json$">
+    Header set Content-Type "application/json"
+</FilesMatch>
+
+# CORS Headers für API
+<IfModule mod_headers.c>
+    <FilesMatch "\.php$">
+        Header set Access-Control-Allow-Origin "*"
+        Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Header set Access-Control-Allow-Headers "Content-Type"
+    </FilesMatch>
+</IfModule>
+
+# 301-Weiterleitungen für alte Unterseiten
+Redirect 301 /leistungen.html /#leistungen
+Redirect 301 /leistungen /#leistungen
+Redirect 301 /galerie.html /#galerie
+Redirect 301 /galerie /#galerie
+Redirect 301 /ueber-uns.html /#ueber-uns
+Redirect 301 /ueber-uns /#ueber-uns
+Redirect 301 /kontakt.html /#terminbuchung
+Redirect 301 /kontakt /#terminbuchung
+
+# GZIP Kompression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Browser Caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+</IfModule>
+
+# Sicherheit: Verstecke Server-Informationen
+ServerSignature Off
+
+# Verhindere Directory Listing
+Options -Indexes
+
+# Schütze .htaccess und andere wichtige Dateien
+<FilesMatch "^(\.htaccess|\.htpasswd|\.git|\.env|composer\.json|composer\.lock|package\.json|package-lock\.json)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+

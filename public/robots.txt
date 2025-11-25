@@ -1,0 +1,10 @@
+# robots.txt for GutachtenRuhr.de
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://gutachtenruhr.de/sitemap.xml
+
+
+
