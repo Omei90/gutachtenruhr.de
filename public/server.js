@@ -356,6 +356,12 @@ function renderTemplate(cityData, baseUrl) {
   
   // Stadtteile generieren
   const stadtteileSection = generateStadtteileSection(cityData, cityName);
+  console.log(`📋 Stadtteile für ${cityName}:`, cityData.stadtteile ? cityData.stadtteile.length : 0, 'Stadtteile gefunden');
+  if (cityData.stadtteile && cityData.stadtteile.length > 0) {
+    console.log(`✅ Stadtteile-Section generiert (${stadtteileSection.length} Zeichen)`);
+  } else {
+    console.warn(`⚠️ Keine Stadtteile für ${cityName} gefunden!`);
+  }
   
   // Schema.org JSON generieren
   const schemaJson = generateSchemaJson(cityData, cityName, citySlug, baseUrl);
@@ -384,7 +390,22 @@ function renderTemplate(cityData, baseUrl) {
   
   let rendered = template;
   for (const [placeholder, value] of Object.entries(replacements)) {
-    rendered = rendered.replace(new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'), value);
+    const regex = new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+    const beforeReplace = rendered;
+    rendered = rendered.replace(regex, value);
+    
+    // Debug: Prüfe ob Ersetzung funktioniert hat
+    if (placeholder === '{{STADTTEILE_SECTION}}' && beforeReplace === rendered && value) {
+      console.error(`❌ Ersetzung fehlgeschlagen für ${placeholder}!`);
+      console.error(`Template enthält Platzhalter:`, rendered.includes(placeholder));
+      console.error(`Wert ist:`, value.substring(0, 100));
+    }
+  }
+  
+  // Prüfe ob alle Platzhalter ersetzt wurden
+  const remainingPlaceholders = rendered.match(/\{\{[A-Z_]+\}\}/g);
+  if (remainingPlaceholders && remainingPlaceholders.length > 0) {
+    console.warn(`⚠️ Nicht ersetzte Platzhalter gefunden:`, remainingPlaceholders);
   }
   
   // In Cache speichern
