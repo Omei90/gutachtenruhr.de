@@ -85,16 +85,11 @@ let templateCache = null;
 // Gerenderte Templates cachen (pro Stadt)
 const renderedCache = {};
 
-// Cache leeren (für Debug)
+// Cache leeren (für Debug - nur bei Bedarf)
 function clearTemplateCache() {
   Object.keys(renderedCache).forEach(key => delete renderedCache[key]);
   console.log('🗑️ Template-Cache geleert');
 }
-
-// Cache bei jedem Request leeren (temporär für Debug)
-setInterval(() => {
-  clearTemplateCache();
-}, 1000); // Jede Sekunde Cache leeren
 
 // Template laden und cachen
 function loadTemplate() {
@@ -336,8 +331,10 @@ function renderTemplate(cityData, baseUrl) {
   // Cache-Key erstellen (basierend auf Stadt-Slug)
   const cacheKey = cityData.slug;
   
-  // CACHE DEAKTIVIERT - Immer neu rendern
-  clearTemplateCache();
+  // Prüfe ob bereits gecacht
+  if (renderedCache[cacheKey]) {
+    return renderedCache[cacheKey];
+  }
   
   console.log(`🔄 Rendere Template neu für ${cityData.name}`);
   
@@ -797,10 +794,9 @@ Object.keys(citiesData).forEach(citySlug => {
       
       console.log(`✅ Template erfolgreich gerendert für ${citySlug}`);
       
-      // Cache-Header: KEIN Cache für Debug
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-      res.setHeader('Pragma', 'no-cache');
-      res.setHeader('Expires', '0');
+      // HTTP-Cache-Header setzen für bessere Performance
+      res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 Stunde Cache
+      res.setHeader('ETag', `"${citySlug}-${Date.now()}"`);
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       
       res.send(rendered);
@@ -818,11 +814,7 @@ app.get('/', (req, res) => {
   const baseUrl = `${req.protocol}://${req.get('host')}`;
   
   // Wenn keine Stadt angegeben, normale index.html servieren
-  // WICHTIG: Cache-Header setzen, damit Browser nicht cached
   if (!citySlug) {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
     return res.sendFile(path.join(__dirname, 'index.html'));
   }
   
