@@ -3596,13 +3596,46 @@ if (document.readyState === 'loading') {
 // ============================================
 // Besucher-Tracking
 // ============================================
-// Session-ID generieren und speichern
+// Session-ID generieren und speichern (mit Fallback für Mobile)
 function getSessionId() {
-    let sessionId = sessionStorage.getItem('analytics_session_id');
-    if (!sessionId) {
-        sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        sessionStorage.setItem('analytics_session_id', sessionId);
+    let sessionId = null;
+    
+    // Versuche zuerst sessionStorage
+    try {
+        sessionId = sessionStorage.getItem('analytics_session_id');
+    } catch (e) {
+        console.warn('⚠️ sessionStorage nicht verfügbar, verwende localStorage:', e);
     }
+    
+    // Fallback: localStorage
+    if (!sessionId) {
+        try {
+            sessionId = localStorage.getItem('analytics_session_id');
+        } catch (e) {
+            console.warn('⚠️ localStorage nicht verfügbar:', e);
+        }
+    }
+    
+    // Wenn keine Session-ID, erstelle eindeutige
+    if (!sessionId) {
+        // Eindeutigere ID: Timestamp + Random + User-Agent-Hash
+        const timestamp = Date.now();
+        const random = Math.random().toString(36).substr(2, 9);
+        const userAgentHash = navigator.userAgent.substring(0, 10).replace(/\W/g, '');
+        sessionId = `session_${timestamp}_${random}_${userAgentHash}`;
+        
+        // Versuche zu speichern
+        try {
+            sessionStorage.setItem('analytics_session_id', sessionId);
+        } catch (e) {
+            try {
+                localStorage.setItem('analytics_session_id', sessionId);
+            } catch (e2) {
+                console.warn('⚠️ Keine Storage verfügbar, Session-ID wird nicht gespeichert');
+            }
+        }
+    }
+    
     return sessionId;
 }
 
@@ -3613,7 +3646,21 @@ async function trackVisitor() {
         const pageTitle = document.title;
         const pagePath = window.location.pathname + window.location.search;
         
-        console.log('📊 Tracking startet:', { sessionId, pageUrl, pageTitle, pagePath });
+        // Erweiterte Debug-Info
+        const debugInfo = {
+            sessionId,
+            pageUrl,
+            pageTitle,
+            pagePath,
+            userAgent: navigator.userAgent,
+            timestamp: new Date().toISOString()
+        };
+        
+        console.log('📊 Tracking startet:', debugInfo);
+        
+        // Timeout für langsame Verbindungen
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 Sekunden Timeout
         
         const response = await fetch('/api/track-visitor', {
             method: 'POST',
@@ -3625,8 +3672,11 @@ async function trackVisitor() {
                 pageUrl: pageUrl,
                 pageTitle: pageTitle,
                 pagePath: pagePath
-            })
+            }),
+            signal: controller.signal
         });
+        
+        clearTimeout(timeoutId);
         
         if (!response.ok) {
             console.error('❌ Tracking-Response nicht OK:', response.status, response.statusText);
@@ -3642,7 +3692,16 @@ async function trackVisitor() {
             console.warn('⚠️ Tracking fehlgeschlagen:', data.error || 'Unbekannter Fehler');
         }
     } catch (error) {
-        console.error('❌ Fehler beim Tracking:', error);
+        if (error.name === 'AbortError') {
+            console.error('❌ Tracking-Timeout: Server antwortet nicht');
+        } else {
+            console.error('❌ Fehler beim Tracking:', error);
+            console.error('Error Details:', {
+                message: error.message,
+                stack: error.stack,
+                name: error.name
+            });
+        }
     }
 }
 

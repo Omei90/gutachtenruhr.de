@@ -199,6 +199,9 @@ function renderTemplate(cityData, baseUrl) {
 
 const app = express();
 
+// Trust Proxy - WICHTIG für korrekte IP-Erkennung hinter Nginx
+app.set('trust proxy', true);
+
 // Security Middleware
 app.use(helmet({
   contentSecurityPolicy: false, // Für Dashboard-Anforderungen
@@ -224,7 +227,8 @@ app.use((req, res, next) => {
 const adminLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 Minute
   max: 100, // 100 Requests pro Minute für Admin
-  message: 'Zu viele Anfragen von dieser IP, bitte versuchen Sie es später erneut.'
+  message: 'Zu viele Anfragen von dieser IP, bitte versuchen Sie es später erneut.',
+  trustProxy: true // WICHTIG: Aktiviert für Nginx Proxy
 });
 
 app.use('/api/admin', adminLimiter);
