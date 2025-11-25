@@ -376,13 +376,19 @@ app.post('/api/track-visitor', async (req, res) => {
                 
                 if (existingVisit) {
                     // Update last activity
-                    db.run('UPDATE visits SET last_activity_at = datetime("now") WHERE id = ?', [existingVisit.id]);
+                    db.run('UPDATE visits SET last_activity_at = datetime("now") WHERE id = ?', [existingVisit.id], (err) => {
+                        if (err) console.error('Error updating visit:', err);
+                    });
                     
                     // Page View hinzufügen
                     db.run(`INSERT INTO page_views (visit_id, session_id, page_url, page_title, page_path, viewed_at) 
                             VALUES (?, ?, ?, ?, ?, datetime("now"))`, 
-                        [existingVisit.id, sessionId, req.body.pageUrl || '/', req.body.pageTitle || '', req.body.pagePath || '/']);
+                        [existingVisit.id, sessionId, req.body.pageUrl || '/', req.body.pageTitle || '', req.body.pagePath || '/'],
+                        (err) => {
+                            if (err) console.error('Error inserting page view:', err);
+                        });
                     
+                    console.log('✅ Bestehender Besuch aktualisiert:', existingVisit.id);
                     return res.json({ 
                         success: true, 
                         isReturning: true,
@@ -414,8 +420,12 @@ app.post('/api/track-visitor', async (req, res) => {
                                     (visit_id, session_id, country, region, city, device_type, browser, browser_version, os, os_version, recorded_at)
                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime("now"))`,
                                 [visitId, sessionId, geo?.country || null, geo?.region || null, geo?.city || null, 
-                                 deviceType, agent.family, agent.toVersion(), agent.os.family, agent.os.toVersion()]);
+                                 deviceType, agent.family, agent.toVersion(), agent.os.family, agent.os.toVersion()],
+                                (err) => {
+                                    if (err) console.error('Error inserting demographics:', err);
+                                });
                             
+                            console.log('✅ Neuer Besuch erstellt:', visitId);
                             res.json({ 
                                 success: true, 
                                 isReturning: false,
