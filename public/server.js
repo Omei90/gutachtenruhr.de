@@ -162,8 +162,8 @@ function renderTemplate(cityData, baseUrl) {
   const template = loadTemplate();
   const cityName = cityData.name;
   const citySlug = cityData.slug;
-  // Canonical URL: Verwende jetzt /stadt-slug statt Query-Parameter für bessere SEO
-  const canonicalUrl = cityData ? `${baseUrl}/${citySlug}` : baseUrl;
+  // Canonical URL: Verwende jetzt /kfz-gutachter-stadt-slug für bessere SEO
+  const canonicalUrl = cityData ? `${baseUrl}/kfz-gutachter-${citySlug}` : baseUrl;
   
   // OG und Twitter Tags
   const ogTitle = cityData.metaTitle || `Kfz Gutachter ${cityName} | Kostenlos 24h | GutachtenRuhr`;
@@ -533,10 +533,10 @@ app.post('/api/contact', async (req, res) => {
     });
 });
 
-// Stadt-spezifische Routen für SEO (z.B. /essen, /koeln)
+// Stadt-spezifische Routen für SEO (z.B. /kfz-gutachter-essen, /kfz-gutachter-koeln)
 // Diese Routen werden von Google besser erkannt als Query-Parameter
 Object.keys(citiesData).forEach(citySlug => {
-  app.get(`/${citySlug}`, (req, res) => {
+  app.get(`/kfz-gutachter-${citySlug}`, (req, res) => {
     const baseUrl = `${req.protocol}://${req.get('host')}`;
     const cityData = citiesData[citySlug];
     
