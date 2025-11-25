@@ -797,9 +797,10 @@ Object.keys(citiesData).forEach(citySlug => {
       
       console.log(`✅ Template erfolgreich gerendert für ${citySlug}`);
       
-      // HTTP-Cache-Header setzen für bessere Performance
-      res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 Stunde Cache
-      res.setHeader('ETag', `"${citySlug}-${Date.now()}"`);
+      // Cache-Header: KEIN Cache für Debug
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.setHeader('Pragma', 'no-cache');
+      res.setHeader('Expires', '0');
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       
       res.send(rendered);
@@ -817,7 +818,11 @@ app.get('/', (req, res) => {
   const baseUrl = `${req.protocol}://${req.get('host')}`;
   
   // Wenn keine Stadt angegeben, normale index.html servieren
+  // WICHTIG: Cache-Header setzen, damit Browser nicht cached
   if (!citySlug) {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     return res.sendFile(path.join(__dirname, 'index.html'));
   }
   
