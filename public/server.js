@@ -336,7 +336,6 @@ function renderTemplate(cityData, baseUrl) {
     return renderedCache[cacheKey];
   }
   
-  console.log(`🔄 Rendere Template neu für ${cityData.name}`);
   
   const template = loadTemplate();
   const cityName = cityData.name;
@@ -357,15 +356,7 @@ function renderTemplate(cityData, baseUrl) {
   const cityH3 = cityData.h3 || `Service in ${cityName} und Umgebung`;
   
   // Stadtteile generieren
-  console.log(`📋 Prüfe Stadtteile für ${cityName}...`);
-  console.log(`   cityData.stadtteile:`, cityData.stadtteile ? `Array mit ${cityData.stadtteile.length} Einträgen` : 'UNDEFINED');
   const stadtteileSection = generateStadtteileSection(cityData, cityName);
-  console.log(`   Stadtteile-Section Länge:`, stadtteileSection.length, 'Zeichen');
-  if (stadtteileSection.length > 0) {
-    console.log(`✅ Stadtteile-Section generiert! Erste 100 Zeichen:`, stadtteileSection.substring(0, 100));
-  } else {
-    console.warn(`⚠️ Stadtteile-Section ist LEER für ${cityName}!`);
-  }
   
   // Schema.org JSON generieren
   const schemaJson = generateSchemaJson(cityData, cityName, citySlug, baseUrl);
@@ -393,38 +384,9 @@ function renderTemplate(cityData, baseUrl) {
   };
   
   let rendered = template;
-  console.log(`🔄 Starte Ersetzungen...`);
   for (const [placeholder, value] of Object.entries(replacements)) {
     const regex = new RegExp(placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-    const beforeReplace = rendered;
-    const placeholderExists = rendered.includes(placeholder);
-    
     rendered = rendered.replace(regex, value);
-    
-    // Debug für STADTTEILE_SECTION
-    if (placeholder === '{{STADTTEILE_SECTION}}') {
-      console.log(`   ${placeholder}:`);
-      console.log(`     - Platzhalter im Template gefunden:`, placeholderExists);
-      console.log(`     - Wert-Länge:`, value ? value.length : 0);
-      console.log(`     - Ersetzung erfolgreich:`, beforeReplace !== rendered);
-      if (beforeReplace === rendered && value && value.length > 0) {
-        console.error(`     ❌ ERSETZUNG FEHLGESCHLAGEN!`);
-        console.error(`     Template-Snippet:`, rendered.substring(rendered.indexOf('{{STADTTEILE_SECTION}}') - 50, rendered.indexOf('{{STADTTEILE_SECTION}}') + 100));
-      }
-    }
-  }
-  
-  // Prüfe ob STADTTEILE_SECTION noch im gerenderten HTML ist
-  if (rendered.includes('{{STADTTEILE_SECTION}}')) {
-    console.error(`❌ STADTTEILE_SECTION wurde NICHT ersetzt!`);
-  } else {
-    console.log(`✅ Alle Platzhalter ersetzt`);
-  }
-  
-  // Prüfe ob alle Platzhalter ersetzt wurden
-  const remainingPlaceholders = rendered.match(/\{\{[A-Z_]+\}\}/g);
-  if (remainingPlaceholders && remainingPlaceholders.length > 0) {
-    console.warn(`⚠️ Nicht ersetzte Platzhalter gefunden:`, remainingPlaceholders);
   }
   
   // In Cache speichern
@@ -772,27 +734,15 @@ app.post('/api/contact', async (req, res) => {
 // Diese Routen werden von Google besser erkannt als Query-Parameter
 Object.keys(citiesData).forEach(citySlug => {
   app.get(`/kfz-gutachter-${citySlug}`, (req, res) => {
-    console.log(`🏙️ Stadt-Route aufgerufen: /kfz-gutachter-${citySlug}`);
     const baseUrl = `${req.protocol}://${req.get('host')}`;
     const cityData = citiesData[citySlug];
     
     if (!cityData) {
-      console.error(`❌ Stadt-Daten nicht gefunden für: ${citySlug}`);
       return res.status(404).sendFile(path.join(__dirname, 'index.html'));
     }
     
-    console.log(`✅ Stadt-Daten gefunden: ${cityData.name}`);
-    
     try {
       const rendered = renderTemplate(cityData, baseUrl);
-      
-      // Prüfe ob Template korrekt gerendert wurde
-      if (!rendered || rendered.includes('{{H1_TITLE}}')) {
-        console.error(`❌ Template wurde nicht korrekt gerendert für ${citySlug}`);
-        throw new Error('Template-Ersetzung fehlgeschlagen');
-      }
-      
-      console.log(`✅ Template erfolgreich gerendert für ${citySlug}`);
       
       // HTTP-Cache-Header setzen für bessere Performance
       res.setHeader('Cache-Control', 'public, max-age=3600'); // 1 Stunde Cache
@@ -801,8 +751,7 @@ Object.keys(citiesData).forEach(citySlug => {
       
       res.send(rendered);
     } catch (error) {
-      console.error(`❌ Fehler beim Rendern des Templates für ${citySlug}:`, error);
-      console.error('Stack:', error.stack);
+      console.error(`Fehler beim Rendern des Templates für ${citySlug}:`, error);
       res.sendFile(path.join(__dirname, 'index.html'));
     }
   });
