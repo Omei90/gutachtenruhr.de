@@ -451,23 +451,29 @@ app.post('/api/notify-visitor', async (req, res) => {
 // API: Test - Prüfe ob Tracking-Daten vorhanden sind
 app.get('/api/test-tracking', (req, res) => {
     try {
+        console.log('🧪 GET /api/test-tracking aufgerufen');
         const db = require('./api/db');
         db.get('SELECT COUNT(*) as count FROM visits', (err, visits) => {
             if (err) {
+                console.error('❌ Fehler beim Abrufen der Visits:', err);
                 return res.json({ error: err.message });
             }
             db.get('SELECT COUNT(*) as count FROM page_views', (err, pageViews) => {
                 if (err) {
+                    console.error('❌ Fehler beim Abrufen der Page Views:', err);
                     return res.json({ error: err.message });
                 }
-                res.json({
+                const result = {
                     visits: visits?.count || 0,
                     pageViews: pageViews?.count || 0,
                     message: 'Tracking-Datenbank ist erreichbar'
-                });
+                };
+                console.log('✅ Test-Tracking Ergebnis:', result);
+                res.json(result);
             });
         });
     } catch (error) {
+        console.error('❌ Fehler in /api/test-tracking:', error);
         res.json({ error: error.message });
     }
 });
