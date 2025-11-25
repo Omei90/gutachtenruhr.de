@@ -416,8 +416,12 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Request Logging (ganz früh)
+// Request-Logging nur für wichtige Routen (Performance-Optimierung)
 app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  // Nur API-Routen und Stadt-Routen loggen, nicht statische Dateien
+  if (req.path.startsWith('/api/') || req.path.startsWith('/kfz-gutachter-') || req.path === '/') {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  }
   next();
 });
 
