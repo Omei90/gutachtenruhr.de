@@ -298,6 +298,34 @@ function generateBreadcrumbs(cityName, citySlug, baseUrl) {
   });
 }
 
+// Stadtteile Section generieren
+function generateStadtteileSection(cityData, cityName) {
+  const stadtteile = cityData.stadtteile || [];
+  
+  if (stadtteile.length === 0) {
+    return '';
+  }
+  
+  const stadtteileList = stadtteile.map(stadtteil => 
+    `<li style="display: inline-block; margin: 0.5rem 1rem; padding: 0.5rem 1rem; background: rgba(10, 38, 71, 0.05); border-radius: 8px; font-size: 0.95rem;">
+      <i class="fa-solid fa-location-dot" style="color: var(--accent); margin-right: 0.5rem;"></i>
+      ${stadtteil}
+    </li>`
+  ).join('');
+  
+  return `
+    <div style="margin-top: var(--spacing-2xl); padding-top: var(--spacing-xl); border-top: 2px solid rgba(10, 38, 71, 0.1);">
+      <h4 style="font-size: 1.3rem; font-weight: 700; color: var(--primary-dark); margin-bottom: var(--spacing-lg); text-align: center;">
+        <i class="fa-solid fa-map-location-dot" style="color: var(--accent); margin-right: 0.5rem;"></i>
+        Wir sind in allen Stadtteilen von ${cityName} für Sie da:
+      </h4>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; justify-content: center; max-width: 1000px; margin: 0 auto;">
+        ${stadtteileList}
+      </ul>
+    </div>
+  `;
+}
+
 // Template rendern (mit Caching)
 function renderTemplate(cityData, baseUrl) {
   // Cache-Key erstellen (basierend auf Stadt-Slug)
@@ -326,6 +354,9 @@ function renderTemplate(cityData, baseUrl) {
   const cityH2 = cityData.h2 || `Kfz Gutachter ${cityName} – Ihr Experte vor Ort`;
   const cityH3 = cityData.h3 || `Service in ${cityName} und Umgebung`;
   
+  // Stadtteile generieren
+  const stadtteileSection = generateStadtteileSection(cityData, cityName);
+  
   // Schema.org JSON generieren
   const schemaJson = generateSchemaJson(cityData, cityName, citySlug, baseUrl);
   
@@ -346,6 +377,7 @@ function renderTemplate(cityData, baseUrl) {
     '{{CITY_CONTENT}}': cityContent,
     '{{CITY_H2}}': cityH2,
     '{{CITY_H3}}': cityH3,
+    '{{STADTTEILE_SECTION}}': stadtteileSection,
     '{{SCHEMA_JSON}}': schemaJson,
     '{{BREADCRUMBS_JSON}}': generateBreadcrumbs(cityName, citySlug, baseUrl)
   };
