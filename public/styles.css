@@ -1747,6 +1747,11 @@ img {
     padding-top: 80px;
     padding-bottom: var(--spacing-3xl);
     transition: background 0.3s ease;
+    /* Firefox-Performance-Optimierung */
+    contain: layout style paint;
+    transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    will-change: scroll-position;
 }
 
 /* KFZ Background with Image */
@@ -1755,6 +1760,11 @@ img {
     inset: 0;
     z-index: 0;
     overflow: hidden;
+    /* Firefox-Performance-Optimierung */
+    transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    will-change: transform;
+    contain: layout style paint;
 }
 
 .hero-kfz-bg picture,
@@ -1773,9 +1783,15 @@ img {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    /* Leicht geblurrtes Bild für Desktop */
-    filter: brightness(0.95) contrast(1.15) saturate(1.1) blur(4px);
-    transform: scaleX(-1);
+    /* Filter optimiert für Firefox-Performance (blur entfernt) */
+    filter: brightness(0.95) contrast(1.15) saturate(1.1);
+    transform: scaleX(-1) translateZ(0);
+    /* GPU-Beschleunigung für bessere Performance */
+    will-change: transform, filter;
+    /* Firefox-spezifische Optimierung */
+    -moz-transform: scaleX(-1) translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .hero-kfz-gradient-overlay {
