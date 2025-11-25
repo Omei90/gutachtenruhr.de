@@ -400,6 +400,18 @@ const app = express();
 // Trust Proxy - WICHTIG für korrekte IP-Erkennung hinter Nginx
 app.set('trust proxy', true);
 
+// 301 Redirects für www/non-www (SEO-Optimierung)
+// Redirect non-www zu www (www ist bevorzugt für SEO)
+app.use((req, res, next) => {
+  const host = req.get('host');
+  // Nur redirecten wenn nicht bereits www
+  if (host && !host.startsWith('www.') && !host.includes('localhost') && !host.includes('127.0.0.1')) {
+    const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
+    return res.redirect(301, `${protocol}://www.${host}${req.originalUrl}`);
+  }
+  next();
+});
+
 // Security Middleware
 app.use(helmet({
   contentSecurityPolicy: false, // Für Dashboard-Anforderungen
