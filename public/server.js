@@ -20,6 +20,14 @@ const adminRoutes = require('./api/routes/admin');
 let whatsappService = null;
 try {
     whatsappService = require('../whatsapp-service');
+    // Initialisiere WhatsApp-Service beim Server-Start
+    if (whatsappService && process.env.ADMIN_PHONE_NUMBER) {
+        whatsappService.initialize().catch(error => {
+            console.error('⚠️ WhatsApp-Initialisierung fehlgeschlagen:', error.message);
+        });
+    } else if (whatsappService) {
+        console.log('⚠️ ADMIN_PHONE_NUMBER nicht in .env gesetzt. WhatsApp-Benachrichtigungen deaktiviert.');
+    }
 } catch (error) {
     console.log('⚠️ WhatsApp-Service nicht verfügbar. Installiere whatsapp-web.js für WhatsApp-Benachrichtigungen.');
 }
