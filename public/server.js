@@ -91,6 +91,11 @@ function clearTemplateCache() {
   console.log('🗑️ Template-Cache geleert');
 }
 
+// Cache bei jedem Request leeren (temporär für Debug)
+setInterval(() => {
+  clearTemplateCache();
+}, 1000); // Jede Sekunde Cache leeren
+
 // Template laden und cachen
 function loadTemplate() {
   if (!templateCache) {
