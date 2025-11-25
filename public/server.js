@@ -202,7 +202,9 @@ const app = express();
 // Security Middleware
 app.use(helmet({
   contentSecurityPolicy: false, // Für Dashboard-Anforderungen
-  crossOriginEmbedderPolicy: false
+  crossOriginEmbedderPolicy: false,
+  crossOriginOpenerPolicy: false, // Deaktiviert für HTTP (wird bei HTTPS automatisch aktiviert)
+  originAgentCluster: false // Deaktiviert um Warnungen zu vermeiden
 }));
 
 // CORS konfigurieren
