@@ -750,7 +750,8 @@ app.post('/api/contact', async (req, res) => {
 // Diese Routen werden von Google besser erkannt als Query-Parameter
 Object.keys(citiesData).forEach(citySlug => {
   app.get(`/kfz-gutachter-${citySlug}`, (req, res) => {
-    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    // Canonical URL: Immer www.gutachtenruhr.de verwenden (Hauptdomain)
+    const baseUrl = 'https://www.gutachtenruhr.de';
     const cityData = citiesData[citySlug];
     
     if (!cityData) {
@@ -776,7 +777,8 @@ Object.keys(citiesData).forEach(citySlug => {
 // Root Route - serviere index.html oder stadt-spezifische Version (für Query-Parameter)
 app.get('/', (req, res) => {
   const citySlug = req.query.stadt;
-  const baseUrl = `${req.protocol}://${req.get('host')}`;
+  // Canonical URL: Immer www.gutachtenruhr.de verwenden (Hauptdomain)
+  const baseUrl = 'https://www.gutachtenruhr.de';
   
   // Wenn keine Stadt angegeben, normale index.html servieren
   if (!citySlug) {
