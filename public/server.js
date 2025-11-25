@@ -16,8 +16,48 @@ initDatabase().catch(error => {
 // Routen importieren
 const adminRoutes = require('./api/routes/admin');
 
+// WhatsApp-Service (optional - nur wenn konfiguriert)
+let whatsappService = null;
+try {
+    whatsappService = require('../whatsapp-service');
+} catch (error) {
+    console.log('⚠️ WhatsApp-Service nicht verfügbar. Installiere whatsapp-web.js für WhatsApp-Benachrichtigungen.');
+}
+
 // Stadt-Daten laden
 const citiesData = JSON.parse(fs.readFileSync(path.join(__dirname, 'cities.json'), 'utf8'));
+
+// Termine-Datei
+const APPOINTMENTS_FILE = path.join(__dirname, 'data', 'appointments.json');
+
+// Stelle sicher, dass data Ordner existiert
+if (!fs.existsSync(path.join(__dirname, 'data'))) {
+    fs.mkdirSync(path.join(__dirname, 'data'), { recursive: true });
+}
+
+// Lade Termine aus Datei
+function loadAppointments() {
+    try {
+        if (fs.existsSync(APPOINTMENTS_FILE)) {
+            const data = fs.readFileSync(APPOINTMENTS_FILE, 'utf8');
+            return JSON.parse(data);
+        }
+    } catch (error) {
+        console.error('Fehler beim Laden der Termine:', error);
+    }
+    return [];
+}
+
+// Speichere Termine in Datei
+function saveAppointments(appointments) {
+    try {
+        fs.writeFileSync(APPOINTMENTS_FILE, JSON.stringify(appointments, null, 2));
+        return true;
+    } catch (error) {
+        console.error('Fehler beim Speichern der Termine:', error);
+        return false;
+    }
+}
 
 // Template-Cache
 let templateCache = null;
@@ -169,6 +209,127 @@ app.use('/api/admin', adminLimiter);
 
 // API-Routen registrieren
 app.use('/api/admin', adminRoutes);
+
+// API: Verfügbare Zeitslots abrufen
+app.get('/api/available-slots', (req, res) => {
+    const { date } = req.query;
+    
+    if (!date) {
+        return res.status(400).json({ error: 'Datum fehlt' });
+    }
+    
+    const appointments = loadAppointments();
+    const bookedSlots = appointments
+        .filter(apt => apt.date === date && apt.status !== 'cancelled')
+        .map(apt => apt.time);
+    
+    // Verfügbare Zeitslots (Mo-Fr 8-20 Uhr)
+    const allSlots = [
+        '08:00', '09:00', '10:00', '11:00', '12:00',
+        '13:00', '14:00', '15:00', '16:00', '17:00',
+        '18:00', '19:00', '20:00'
+    ];
+    
+    const availableSlots = allSlots.filter(slot => !bookedSlots.includes(slot));
+    
+    res.json({ available: availableSlots, booked: bookedSlots });
+});
+
+// API: Terminbuchung
+app.post('/api/appointment', async (req, res) => {
+    console.log('📥 POST /api/appointment empfangen');
+    console.log('Request Body:', JSON.stringify(req.body, null, 2));
+    
+    const { name, email, phone, date, time, callbackTime, message, vehicleInfo } = req.body;
+    
+    // Validierung
+    if (!name || !email || !phone || !date || !time) {
+        return res.status(400).json({ 
+            success: false, 
+            error: 'Pflichtfelder fehlen' 
+        });
+    }
+    
+    // Prüfe ob Termin bereits gebucht ist
+    const appointments = loadAppointments();
+    const existingAppointment = appointments.find(
+        apt => apt.date === date && apt.time === time && apt.status !== 'cancelled'
+    );
+    
+    if (existingAppointment) {
+        return res.status(409).json({ 
+            success: false, 
+            error: 'Dieser Termin ist bereits vergeben' 
+        });
+    }
+    
+    // Erstelle neuen Termin
+    const newAppointment = {
+        id: Date.now().toString(),
+        name,
+        email,
+        phone,
+        date,
+        time,
+        callbackTime: callbackTime || 'flexibel',
+        message: message || '',
+        vehicleInfo: vehicleInfo || '',
+        status: 'pending',
+        createdAt: new Date().toISOString()
+    };
+    
+    appointments.push(newAppointment);
+    
+    if (!saveAppointments(appointments)) {
+        return res.status(500).json({ 
+            success: false, 
+            error: 'Fehler beim Speichern des Termins' 
+        });
+    }
+    
+    // Formatierte Datumsanzeige
+    const formattedDate = new Date(date).toLocaleDateString('de-DE', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    
+    // WhatsApp-Benachrichtigung an dich senden
+    if (whatsappService && process.env.ADMIN_PHONE_NUMBER) {
+        const whatsappMessage = `🚗 *Neue Terminanfrage!*\n\n` +
+            `*Name:* ${name}\n` +
+            `*Telefon:* ${phone}\n` +
+            `*Termin:* ${formattedDate} um ${time} Uhr\n` +
+            `*Rückrufzeit:* ${callbackTime || 'flexibel'}\n` +
+            `${vehicleInfo ? `*Fahrzeug:* ${vehicleInfo}\n` : ''}` +
+            `${message ? `*Nachricht:* ${message}\n` : ''}` +
+            `\n*Termin-ID:* ${newAppointment.id}`;
+
+        try {
+            const whatsappResult = await whatsappService.sendMessage(
+                process.env.ADMIN_PHONE_NUMBER,
+                whatsappMessage
+            );
+            
+            if (whatsappResult.success) {
+                console.log('✅ WhatsApp-Benachrichtigung gesendet');
+            } else {
+                console.error('⚠️ WhatsApp-Versand fehlgeschlagen:', whatsappResult.error);
+            }
+        } catch (error) {
+            console.error('⚠️ WhatsApp-Versand fehlgeschlagen:', error);
+            // Termin wurde gespeichert, auch wenn WhatsApp fehlschlägt
+        }
+    }
+    
+    console.log('✅ Termin erfolgreich gespeichert:', newAppointment.id);
+    res.json({ 
+        success: true, 
+        message: 'Terminanfrage erfolgreich gesendet',
+        appointmentId: newAppointment.id
+    });
+});
 
 // Root Route - serviere index.html oder stadt-spezifische Version
 app.get('/', (req, res) => {
