@@ -169,8 +169,8 @@ function generateSchemaJson(cityData, cityName, citySlug, baseUrl) {
       "alternateName": "Kfz Gutachter Ruhrgebiet",
       "description": `Anerkanntes Kfz Sachverständigenbüro für Kfz-Schadengutachten in Oberhausen und ganz NRW. Vor-Ort-Service im Außendienst.`,
       "url": `${baseUrl}/kfz-gutachter-oberhausen`,
-      "logo": "https://gutachtenruhr.de/images/logo.png",
-      "image": "https://gutachtenruhr.de/images/hero-image.jpg",
+      "logo": "https://www.gutachtenruhr.de/images/logo.png",
+      "image": "https://www.gutachtenruhr.de/images/hero-image.jpg",
       "telephone": "+4916097089709",
       "email": "info@gutachtenruhr.de",
       "address": {
