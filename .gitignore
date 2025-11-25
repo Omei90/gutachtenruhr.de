@@ -8,7 +8,10 @@ package-lock.json
 
 # Data files
 data/
-*.json
+# Allow cities.json and package.json
+!cities.json
+!package.json
+!package-lock.json
 
 # WhatsApp session
 whatsapp-session/
