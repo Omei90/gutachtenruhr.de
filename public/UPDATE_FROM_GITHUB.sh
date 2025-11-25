@@ -25,5 +25,13 @@ echo "✅ Dateien aktualisiert!"
 echo "🔄 Starte PM2 neu..."
 pm2 restart gutachtenruhr
 
+echo "⏳ Warte 2 Sekunden..."
+sleep 2
+
+echo "🔄 PM2 nochmal neu starten (Cache leeren)..."
+pm2 restart gutachtenruhr
+
 echo "✅ Fertig! Prüfe Logs mit: pm2 logs gutachtenruhr --lines 20"
+echo ""
+echo "⚠️ WICHTIG: Browser-Cache leeren mit Strg+F5 oder Strg+Shift+R"
 
