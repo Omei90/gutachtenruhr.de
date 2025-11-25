@@ -181,27 +181,35 @@ const iconObserver = new MutationObserver((mutations) => {
 // Hero Image Loading Optimization
 // ============================================
 function optimizeHeroImage() {
-    const heroImage = document.querySelector('.hero-bg-image');
+    const heroImage = document.querySelector('.hero-kfz-bg-image') || document.querySelector('.hero-bg-image');
     if (!heroImage) return;
+    
+    // Firefox-spezifische Optimierung: GPU-Beschleunigung aktivieren
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+        heroImage.style.transform = 'scaleX(-1) translateZ(0)';
+        heroImage.style.willChange = 'transform';
+    }
     
     // Prüfe ob Bild bereits geladen ist
     if (heroImage.complete && heroImage.naturalHeight !== 0) {
         heroImage.classList.add('loaded');
-        console.log('Hero-Bild bereits geladen');
     } else {
         // Zeige Bild sofort, sobald es teilweise geladen ist (für bessere UX)
-        // Das Bild wird sofort sichtbar, auch wenn es noch lädt
         heroImage.classList.add('loaded');
         
-        // Warte auf vollständiges Laden für bessere Qualität
+        // Warte auf vollständiges Laden
         heroImage.addEventListener('load', () => {
-            console.log('Hero-Bild vollständig geladen');
+            // Firefox: Entferne will-change nach dem Laden für bessere Performance
+            if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+                setTimeout(() => {
+                    heroImage.style.willChange = 'auto';
+                }, 1000);
+            }
         }, { once: true });
         
         // Fehlerbehandlung
         heroImage.addEventListener('error', () => {
             console.error('Fehler beim Laden des Hero-Bildes');
-            // Bild bleibt sichtbar (Fallback-Hintergrund wird angezeigt)
         }, { once: true });
     }
 }
