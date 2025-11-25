@@ -3613,6 +3613,8 @@ async function trackVisitor() {
         const pageTitle = document.title;
         const pagePath = window.location.pathname + window.location.search;
         
+        console.log('📊 Tracking startet:', { sessionId, pageUrl, pageTitle, pagePath });
+        
         const response = await fetch('/api/track-visitor', {
             method: 'POST',
             headers: {
@@ -3626,12 +3628,21 @@ async function trackVisitor() {
             })
         });
         
+        if (!response.ok) {
+            console.error('❌ Tracking-Response nicht OK:', response.status, response.statusText);
+            const errorText = await response.text();
+            console.error('Response Body:', errorText);
+            return;
+        }
+        
         const data = await response.json();
         if (data.success) {
-            console.log('✅ Besucher getrackt:', data.isReturning ? 'Wiederkehrender Besucher' : 'Neuer Besucher');
+            console.log('✅ Besucher getrackt:', data.isReturning ? 'Wiederkehrender Besucher' : 'Neuer Besucher', data);
+        } else {
+            console.warn('⚠️ Tracking fehlgeschlagen:', data.error || 'Unbekannter Fehler');
         }
     } catch (error) {
-        console.error('Fehler beim Tracking:', error);
+        console.error('❌ Fehler beim Tracking:', error);
     }
 }
 
