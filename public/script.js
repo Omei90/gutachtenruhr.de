@@ -1803,6 +1803,7 @@ if (appointmentForm) {
         try {
             // Verwende immer Node.js API-Endpoint (Server läuft mit Node.js/Express)
             const apiUrl = '/api/appointment';
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             
             console.log('Sende Anfrage an:', apiUrl, '(Lokal:', isLocal, ', Hostname:', window.location.hostname, ', Port:', window.location.port, ')');
             
@@ -2012,6 +2013,7 @@ if (contactForm) {
         try {
             // Verwende immer Node.js API-Endpoint (Server läuft mit Node.js/Express)
             const apiUrl = '/api/contact';
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
             console.log('Sende Anfrage an:', apiUrl, '(Lokal:', isLocal, ', Hostname:', window.location.hostname, ')');
             
             const response = await fetch(apiUrl, {
