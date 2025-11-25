@@ -85,6 +85,12 @@ let templateCache = null;
 // Gerenderte Templates cachen (pro Stadt)
 const renderedCache = {};
 
+// Cache leeren (für Debug)
+function clearTemplateCache() {
+  Object.keys(renderedCache).forEach(key => delete renderedCache[key]);
+  console.log('🗑️ Template-Cache geleert');
+}
+
 // Template laden und cachen
 function loadTemplate() {
   if (!templateCache) {
@@ -331,11 +337,8 @@ function renderTemplate(cityData, baseUrl) {
   // Cache-Key erstellen (basierend auf Stadt-Slug)
   const cacheKey = cityData.slug;
   
-  // Prüfe ob bereits gecacht - CACHE TEMPORÄR DEAKTIVIERT FÜR DEBUG
-  // if (renderedCache[cacheKey]) {
-  //   console.log(`📦 Cache verwendet für ${cityData.name}`);
-  //   return renderedCache[cacheKey];
-  // }
+  // CACHE DEAKTIVIERT - Immer neu rendern
+  clearTemplateCache();
   
   console.log(`🔄 Rendere Template neu für ${cityData.name}`);
   
@@ -351,8 +354,8 @@ function renderTemplate(cityData, baseUrl) {
   const twitterTitle = ogTitle;
   const twitterDescription = ogDescription;
   
-  // Stadt-spezifischer Content
-  const cityContent = cityData.content || `Als zertifizierter Kfz Gutachter in ${cityName} bieten wir Ihnen professionelle Schadensbegutachtung direkt vor Ort. Unser erfahrenes Team kommt zu Ihnen nach ${cityName} und erstellt ein gerichtsfestes Gutachten innerhalb von 24 Stunden. Kostenlos für Sie als Geschädigten bei unverschuldetem Unfall.`;
+  // Stadt-spezifischer Content - NICHT MEHR VERWENDET (nur noch Stadtteile)
+  // const cityContent = cityData.content || `Als zertifizierter Kfz Gutachter in ${cityName} bieten wir Ihnen professionelle Schadensbegutachtung direkt vor Ort. Unser erfahrenes Team kommt zu Ihnen nach ${cityName} und erstellt ein gerichtsfestes Gutachten innerhalb von 24 Stunden. Kostenlos für Sie als Geschädigten bei unverschuldetem Unfall.`;
   
   const cityH2 = cityData.h2 || `Kfz Gutachter ${cityName} – Ihr Experte vor Ort`;
   const cityH3 = cityData.h3 || `Service in ${cityName} und Umgebung`;
@@ -385,7 +388,7 @@ function renderTemplate(cityData, baseUrl) {
     '{{H1_TITLE}}': cityData.h1 || `Kfz Gutachter ${cityName}`,
     '{{HERO_TEXT}}': cityData.heroText || `Vor Ort Service in ${cityName} und ganz NRW`,
     '{{AREA_SERVED_JSON}}': generateAreaServed(cityName),
-    '{{CITY_CONTENT}}': cityContent,
+    '{{CITY_CONTENT}}': '', // LEER - Content wird nicht mehr angezeigt
     '{{CITY_H2}}': cityH2,
     '{{CITY_H3}}': cityH3,
     '{{STADTTEILE_SECTION}}': stadtteileSection,
