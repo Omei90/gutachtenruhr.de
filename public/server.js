@@ -404,8 +404,12 @@ app.set('trust proxy', true);
 // Redirect non-www zu www (www ist bevorzugt für SEO)
 app.use((req, res, next) => {
   const host = req.get('host');
-  // Nur redirecten wenn nicht bereits www
-  if (host && !host.startsWith('www.') && !host.includes('localhost') && !host.includes('127.0.0.1')) {
+  
+  // Prüfe ob es eine IP-Adresse ist (nicht redirecten)
+  const isIP = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?$/.test(host);
+  
+  // Nur redirecten wenn nicht bereits www, nicht localhost, nicht IP
+  if (host && !host.startsWith('www.') && !host.includes('localhost') && !host.includes('127.0.0.1') && !isIP) {
     const protocol = req.secure || req.headers['x-forwarded-proto'] === 'https' ? 'https' : 'http';
     return res.redirect(301, `${protocol}://www.${host}${req.originalUrl}`);
   }
