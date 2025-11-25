@@ -1,4 +1,7 @@
 // Analytics Backend Server
+// Lade .env Datei (wichtig für ADMIN_PHONE_NUMBER)
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
