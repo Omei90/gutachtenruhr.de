@@ -47,3 +47,5 @@ else
     echo "   sudo certbot --nginx -d $DOMAIN -d $DOMAIN_ALT"
 fi
 
+
+

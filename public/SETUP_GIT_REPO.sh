@@ -151,3 +151,5 @@ echo "     cd /var/www/gutachtenruhr/public && ./GIT_PULL.sh"
 echo "   - Oder manuell: git pull origin main"
 echo ""
 
+
+

@@ -32,6 +32,7 @@
     <link rel="preload" href="styles.css" as="style">
     <link rel="preload" href="script.js" as="script">
     <!-- Hero-Bild mit höchster Priorität preloaden -->
+    <link rel="preload" href="images/Auto2.webp" as="image" fetchpriority="high" crossorigin="anonymous">
     <link rel="preload" href="images/Auto2.JPG" as="image" fetchpriority="high" crossorigin="anonymous">
     <!-- DNS-Prefetch für bessere Performance -->
     <link rel="dns-prefetch" href="/images/">
@@ -454,12 +455,17 @@
             <!-- Background with Image -->
             <div class="hero-kfz-bg">
                 <picture>
+                    <source srcset="images/Auto2.webp" type="image/webp" media="(max-width: 768px)">
                     <source srcset="images/Auto2.JPG" media="(max-width: 768px)">
+                    <source srcset="images/Auto2.webp" type="image/webp">
                     <img src="images/Auto2.JPG"
                          alt="Kfz Gutachter Carsten Heiken - Professionelle Unfallbegutachtung in ganz NRW"
                          class="hero-kfz-bg-image"
                          loading="eager"
-                         fetchpriority="high">
+                         fetchpriority="high"
+                         width="1920"
+                         height="1080"
+                         decoding="async">
                 </picture>
                 <div class="hero-kfz-gradient-overlay"></div>
             </div>
@@ -587,7 +593,10 @@
                 <div class="grid">
                     <!-- Linke Portfolio-Card: Geschäftsführer -->
                     <article class="hero-card">
-                        <img src="images/Auto2.JPG" alt="Carsten Heiken - Kfz-Sachverständiger" class="hero-img" onclick="openPortfolioModal()" style="cursor: pointer;" role="button" tabindex="0" aria-label="Portfolio-Bild vergrößern">
+                        <picture>
+                            <source srcset="images/Auto2.webp" type="image/webp">
+                            <img src="images/Auto2.JPG" alt="Carsten Heiken - Kfz-Sachverständiger" class="hero-img" onclick="openPortfolioModal()" style="cursor: pointer;" role="button" tabindex="0" aria-label="Portfolio-Bild vergrößern" width="600" height="800" loading="lazy" decoding="async">
+                        </picture>
                         <div class="hero-body">
                             <div class="badge">
                                 <i class="fa-solid fa-certificate"></i>
@@ -612,7 +621,10 @@
                                     </div>
                                 </div>
                                 <div class="meisterbrief-image-wrapper" onclick="openMeisterbriefModal()" style="cursor: pointer;" role="button" tabindex="0" aria-label="Meisterbrief vergrößern">
-                                    <img src="images/Meisterbrief.jpg" alt="Meisterbrief Kraftfahrzeugtechnikermeister - Carsten Heiken seit 2013" class="meisterbrief-image" loading="lazy">
+                                    <picture>
+                                        <source srcset="images/Meisterbrief.webp" type="image/webp">
+                                        <img src="images/Meisterbrief.jpg" alt="Meisterbrief Kraftfahrzeugtechnikermeister - Carsten Heiken seit 2013" class="meisterbrief-image" loading="lazy" decoding="async" width="400" height="300">
+                                    </picture>
                                 </div>
                             </div>
                             <p class="personal-message">Seit über zehn Jahren stehen wir Menschen in ganz NRW als zuverlässige Kfz-Schadengutachter zur Seite. In dieser Zeit haben wir mehr als 1.200 Gutachten erstellt – Erfahrung, auf die du dich verlassen kannst.<br><br>Unser fünfköpfiges Team analysiert jeden Unfallschaden bis ins kleinste Detail und setzt sich dafür ein, dass du deine vollständige Entschädigung erhältst. Wir halten dich jederzeit informiert, erklären alle Schritte verständlich und übernehmen sämtliche Formalitäten – vom ersten Kontakt bis zur Auszahlung.<br><br>Kurz gesagt: Du kannst dich entspannt zurücklehnen. Wir kümmern uns um deinen gesamten Schadenfall und sorgen dafür, dass du bekommst, was dir zusteht.</p>
@@ -802,22 +814,40 @@
                 <!-- Bildergalerie - Desktop Grid / Mobile Swipe Slider -->
                 <div class="gallery-grid-2x3" id="gallery-container">
                     <div class="gallery-grid-item" data-image="sam-4377">
-                        <img src="images/accidents/SAM_4377.JPG" alt="Kfz Gutachter Oberhausen - Unfallschaden Begutachtung nach Verkehrsunfall durch zertifizierten Kfz Sachverständigen" loading="lazy" decoding="async">
+                        <picture>
+                            <source srcset="images/accidents/SAM_4377.webp" type="image/webp">
+                            <img src="images/accidents/SAM_4377.JPG" alt="Kfz Gutachter Oberhausen - Unfallschaden Begutachtung nach Verkehrsunfall durch zertifizierten Kfz Sachverständigen" loading="lazy" decoding="async" width="800" height="600">
+                        </picture>
                     </div>
                     <div class="gallery-grid-item" data-image="sam-4370">
-                        <img src="images/accidents/SAM_4370.JPG" alt="Kfz Gutachter Ruhrgebiet - Professionelle Schadensbegutachtung durch Team von GutachtenRuhr.de" loading="lazy" decoding="async">
+                        <picture>
+                            <source srcset="images/accidents/SAM_4370.webp" type="image/webp">
+                            <img src="images/accidents/SAM_4370.JPG" alt="Kfz Gutachter Ruhrgebiet - Professionelle Schadensbegutachtung durch Team von GutachtenRuhr.de" loading="lazy" decoding="async" width="800" height="600">
+                        </picture>
                     </div>
                     <div class="gallery-grid-item" data-image="sam-2292">
-                        <img src="images/accidents/SAM_2292.JPG" alt="Kfz Gutachten Beispiel - Zertifiziertes Team von GutachtenRuhr.de dokumentiert Fahrzeugschaden" loading="lazy" decoding="async">
+                        <picture>
+                            <source srcset="images/accidents/SAM_2292.webp" type="image/webp">
+                            <img src="images/accidents/SAM_2292.JPG" alt="Kfz Gutachten Beispiel - Zertifiziertes Team von GutachtenRuhr.de dokumentiert Fahrzeugschaden" loading="lazy" decoding="async" width="800" height="600">
+                        </picture>
                     </div>
                     <div class="gallery-grid-item" data-image="sam-2808">
-                        <img src="images/accidents/SAM_2808.JPG" alt="Kfz Gutachten Schadensbeispiel - Professionelle Schadensdokumentation durch GutachtenRuhr.de Team" loading="lazy" decoding="async">
+                        <picture>
+                            <source srcset="images/accidents/SAM_2808.webp" type="image/webp">
+                            <img src="images/accidents/SAM_2808.JPG" alt="Kfz Gutachten Schadensbeispiel - Professionelle Schadensdokumentation durch GutachtenRuhr.de Team" loading="lazy" decoding="async" width="800" height="600">
+                        </picture>
                     </div>
                     <div class="gallery-grid-item" data-image="img-0012">
-                        <img src="images/accidents/IMG-20250817-WA0012.jpg" alt="Kfz Gutachten Beispiel - Professionelle Unfallschaden Dokumentation für Versicherung von GutachtenRuhr.de" loading="lazy" decoding="async">
+                        <picture>
+                            <source srcset="images/accidents/IMG-20250817-WA0012.webp" type="image/webp">
+                            <img src="images/accidents/IMG-20250817-WA0012.jpg" alt="Kfz Gutachten Beispiel - Professionelle Unfallschaden Dokumentation für Versicherung von GutachtenRuhr.de" loading="lazy" decoding="async" width="800" height="600">
+                        </picture>
                     </div>
                     <div class="gallery-grid-item" data-image="img-0017">
-                        <img src="images/accidents/IMG-20250819-WA0017.jpg" alt="Kfz Gutachten Schadensbeispiel - Zertifiziertes Team von GutachtenRuhr.de dokumentiert Fahrzeugschaden" loading="lazy" decoding="async">
+                        <picture>
+                            <source srcset="images/accidents/IMG-20250819-WA0017.webp" type="image/webp">
+                            <img src="images/accidents/IMG-20250819-WA0017.jpg" alt="Kfz Gutachten Schadensbeispiel - Zertifiziertes Team von GutachtenRuhr.de dokumentiert Fahrzeugschaden" loading="lazy" decoding="async" width="800" height="600">
+                        </picture>
                     </div>
                 </div>
             </div>
@@ -1354,7 +1384,10 @@
     <div id="meisterbrief-lightbox" class="meisterbrief-lightbox">
         <span class="meisterbrief-lightbox-close">&times;</span>
         <div class="meisterbrief-lightbox-content">
-            <img src="images/Meisterbrief.jpg" alt="Meisterbrief Kraftfahrzeugtechnikermeister - Carsten Heiken seit 2013 - Vergrößerte Ansicht">
+            <picture>
+                <source srcset="images/Meisterbrief.webp" type="image/webp">
+                <img src="images/Meisterbrief.jpg" alt="Meisterbrief Kraftfahrzeugtechnikermeister - Carsten Heiken seit 2013 - Vergrößerte Ansicht">
+            </picture>
         </div>
     </div>
     
@@ -1362,7 +1395,10 @@
     <div id="portfolio-lightbox" class="portfolio-lightbox">
         <span class="portfolio-lightbox-close">&times;</span>
         <div class="portfolio-lightbox-content">
-            <img src="images/Auto2.JPG" alt="Carsten Heiken - Kfz-Sachverständiger - Vergrößerte Ansicht">
+            <picture>
+                <source srcset="images/Auto2.webp" type="image/webp">
+                <img src="images/Auto2.JPG" alt="Carsten Heiken - Kfz-Sachverständiger - Vergrößerte Ansicht">
+            </picture>
         </div>
     </div>
 </body>

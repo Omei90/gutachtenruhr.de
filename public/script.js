@@ -185,14 +185,23 @@ function optimizeHeroImage() {
     if (!heroImage) return;
     
     // Firefox-spezifische Optimierung: GPU-Beschleunigung aktivieren
-    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+    const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+    
+    if (isFirefox) {
         heroImage.style.transform = 'scaleX(-1) translateZ(0)';
+        // will-change nur temporär für bessere Performance
         heroImage.style.willChange = 'transform';
     }
     
     // Prüfe ob Bild bereits geladen ist
     if (heroImage.complete && heroImage.naturalHeight !== 0) {
         heroImage.classList.add('loaded');
+        // Entferne will-change nach dem Laden (Firefox)
+        if (isFirefox) {
+            setTimeout(() => {
+                heroImage.style.willChange = 'auto';
+            }, 500);
+        }
     } else {
         // Zeige Bild sofort, sobald es teilweise geladen ist (für bessere UX)
         heroImage.classList.add('loaded');
@@ -200,17 +209,42 @@ function optimizeHeroImage() {
         // Warte auf vollständiges Laden
         heroImage.addEventListener('load', () => {
             // Firefox: Entferne will-change nach dem Laden für bessere Performance
-            if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+            if (isFirefox) {
                 setTimeout(() => {
                     heroImage.style.willChange = 'auto';
-                }, 1000);
+                }, 500);
             }
         }, { once: true });
         
-        // Fehlerbehandlung
+        // Fehlerbehandlung - Fallback auf JPG wenn WebP fehlt
         heroImage.addEventListener('error', () => {
-            console.error('Fehler beim Laden des Hero-Bildes');
+            console.warn('WebP nicht verfügbar, verwende JPG-Fallback');
+            const picture = heroImage.closest('picture');
+            if (picture) {
+                const img = picture.querySelector('img');
+                if (img && img.src && !img.src.endsWith('.webp')) {
+                    // JPG wird automatisch geladen
+                    heroImage.classList.add('loaded');
+                }
+            }
         }, { once: true });
+    }
+    
+    // Intersection Observer für besseres Lazy Loading (Firefox)
+    if (isFirefox && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src && !img.src) {
+                        img.src = img.dataset.src;
+                    }
+                    observer.unobserve(img);
+                }
+            });
+        }, { rootMargin: '50px' });
+        
+        observer.observe(heroImage);
     }
 }
 

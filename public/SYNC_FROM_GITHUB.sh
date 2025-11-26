@@ -166,3 +166,5 @@ echo "   - Teste die Seite: http://www.gutachtenruhr.de"
 echo "   - Leere Browser-Cache: Strg+Shift+R"
 echo ""
 
+
+
